@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     Camera
         mainCamera;
 
+    const float SHOOT_DELAY_TIME = 0.65f;
+    float shootTimer;
+
     void Start()
     {
         gameSpawn =
@@ -26,17 +29,25 @@ public class Player : MonoBehaviour
 
         mainCamera =
             GameObject.FindWithTag( TAGS.MAIN_CAMERA ).GetComponent< Camera >();
+
+        shootTimer = 0.0f;
     }
 
     void Update()
     {
-        if( gameScript.GameIsActive && Input.GetButtonDown( "Fire" ) )
+        if( shootTimer <= SHOOT_DELAY_TIME )
+        {
+            shootTimer += Time.deltaTime;
+        }
+        else if( gameScript.GameIsActive && Input.GetButtonDown( "Fire" ) )
         {
             ShootBullet( new Vector3( 0.0f, 1.0f, 1.0f ) );
             ShootBullet( new Vector3( -1.0f, 0.0f, 1.0f ) );
             ShootBullet( new Vector3( 1.0f, 0.0f, 1.0f ) );
 
 			HUDCamera.GetComponent<HudCameraScript>().ShootPistol();
+
+            shootTimer = 0.0f;
         }
     }
 
@@ -48,6 +59,7 @@ public class Player : MonoBehaviour
     public void OnGameOver()
     {
         SpawnPlayer();
+        shootTimer = 0.0f;
         gameScript.OnGameOver();
     }
 
