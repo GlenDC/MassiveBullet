@@ -3,6 +3,22 @@ using System.Collections;
 
 public class GameScript : MonoBehaviour
 {
+    public static Config GetConfig()
+    {
+        GameObject
+            config;
+
+        config = GameObject.FindWithTag( TAGS.CONFIG );
+
+        if( config == null )
+        {
+            config = ( GameObject ) Instantiate( Resources.Load( "CONFIG" ) );
+            config.name = "_CONFIG";
+        }
+
+        return config.GetComponent< Config >();
+    }
+
     void Start()
     {
         if( GameObject.FindWithTag( TAGS.CONFIG ) == null )

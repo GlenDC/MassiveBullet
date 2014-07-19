@@ -14,8 +14,7 @@ public class FPSInputController : MonoBehaviour
         motor =
             GetComponent< CharacterMotor >();
 
-        configScript =
-            GameObject.FindWithTag( TAGS.CONFIG ).GetComponent< Config >();
+        configScript = GameScript.GetConfig();
     }
 
     void Update()
