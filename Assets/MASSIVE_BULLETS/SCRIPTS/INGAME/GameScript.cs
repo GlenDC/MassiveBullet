@@ -19,6 +19,11 @@ public class GameScript : MonoBehaviour
         return config.GetComponent< Config >();
     }
 
+    public static GameObject[] GetBullets()
+    {
+        return GameObject.FindGameObjectsWithTag( TAGS.BULLET );
+    }
+
     public int bulletCount { get; private set; }
 
     void Start()
@@ -43,8 +48,7 @@ public class GameScript : MonoBehaviour
     {
         bulletCount = 0;
 
-        var bullets =
-            GameObject.FindGameObjectsWithTag( TAGS.BULLET );
+        var bullets = GameScript.GetBullets();
  
         for( int i = 0; i < bullets.Length; ++i )
         {

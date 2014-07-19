@@ -1,59 +1,147 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HudCameraScript : MonoBehaviour {
+public class HudCameraScript : MonoBehaviour
+{
+    [ SerializeField ]
+    GameObject
+        PistolPrefab;
 
-	[ SerializeField ] GameObject
-		PistolPrefab;
+    GameObject
+        PistolObject;
 
-	GameObject
-		PistolObject;
+    [ SerializeField ]
+    Vector3
+        PistolPosition;
 
-	[ SerializeField ] Vector3
-		PistolPosition;
+    [ SerializeField ]
+    Quaternion
+        PistolOrientation;
 
-	[ SerializeField ] Quaternion
-		PistolOrientation;
+    [ SerializeField ]
+    Texture2D
+        CrosshairTexture,
+        BulletWarningTexture;
 
-	[ SerializeField ] Texture2D
-		CrosshairTexture;
+    Config
+        configScript;
 
-	Config
-		configScript;
+    Camera
+        mainCamera;
 
-	// Use this for initialization
-	void Start () {
-		configScript = GameScript.GetConfig();
+    protected int HSEH { get { return Screen.height / 2; } }
+    protected int HSEW { get { return Screen.width / 2; } }
 
-		SetUpHUDCamera( configScript.HandState == HAND_STATE.RIGHT );
-	}
+    void Start()
+    {
+        configScript = GameScript.GetConfig();
 
-	public void SetUpHUDCamera(bool gun_to_right){
+        mainCamera =
+            GameObject.FindWithTag( TAGS.MAIN_CAMERA ).GetComponent< Camera >();
 
-		if ( !gun_to_right ){
+        SetUpHUDCamera(
+            configScript.HandState == HAND_STATE.RIGHT 
+            );
+    }
 
-			PistolPosition.x -= PistolPosition.x * 2;
-			PistolOrientation.x += 2 * Mathf.PI;
-		}
+    public void SetUpHUDCamera( bool playerIsRightHanded )
+    {
+        if ( !playerIsRightHanded )
+        {
+            PistolPosition.x -= PistolPosition.x * 2;
+            PistolOrientation.x += 2 * Mathf.PI;
+        }
 
-		PistolObject = Instantiate(PistolPrefab,Vector3.zero,Quaternion.identity) as GameObject;
-		PistolObject.transform.parent = transform;
-		PistolObject.name = "HUD_PistolObject";
+        PistolObject =
+            Instantiate(
+                PistolPrefab,
+                Vector3.zero,
+                Quaternion.identity
+                ) as GameObject;
 
-		PistolObject.transform.localPosition = PistolPosition;
-		
-		PistolObject.GetComponent<PistolObjectScript>().SetUpPistolObject();
-	}
+        PistolObject.transform.parent = transform;
+        PistolObject.name = "HUD_PistolObject";
 
-	// Update is called once per frame
-	void Update () {
-	
-	}
+        PistolObject.transform.localPosition = PistolPosition;
+        
+        PistolObject.GetComponent<PistolObjectScript>().SetUpPistolObject();
+    }
 
-	void OnGUI(){
-		GUI.DrawTexture(
-			new Rect( ( Screen.width / 2 ) - 25, ( Screen.height / 2 ) - 25, 50, 50 ),
-			CrosshairTexture
-			);
-	}
+    void OnGUI()
+    {
+        GUI.DrawTexture(
+            new Rect( ( Screen.width / 2 ) - 25, ( Screen.height / 2 ) - 25, 50, 50 ),
+            CrosshairTexture
+            );
+
+        var bullets = GameScript.GetBullets();
+ 
+        for( int i = 0; i < bullets.Length; ++i )
+        {
+            DrawBulletWarning( bullets[ i ].transform, bullets[i].renderer );
+        }
+    }
+
+    void DrawBulletWarning( Transform bullet, Renderer bulletRenderer )
+    {
+        if( !bulletRenderer.isVisible )
+        {
+            Vector3
+                direction;
+            float
+                distance;
+
+            direction = bullet.position - mainCamera.transform.position;
+            distance = direction.magnitude;
+
+            direction.Normalize();
+
+            if( distance > 1.0f && Vector3.Dot( mainCamera.transform.forward, direction ) <= 0 )
+            {
+                Vector3
+                    screenPosition = mainCamera.WorldToScreenPoint( bullet.position );
+
+                if( screenPosition.x <= 0 || screenPosition.x >= Screen.width ||
+                    screenPosition.y <= 0 || screenPosition.y >= Screen.height )
+                {
+                    int
+                        dimension,
+                        half_dimension;
+
+                    distance = Mathf.Clamp( distance / 50.0f, 0.05f, 1.0f );
+                    distance = 1.0f - distance;
+
+                    dimension = ( int ) ( 50.0f * distance );
+                    dimension += 15;
+                    half_dimension = dimension / 2;
+
+                    screenPosition.x = Mathf.Clamp(
+                        screenPosition.x,
+                        half_dimension,
+                        Screen.width - half_dimension
+                        );
+
+                    screenPosition.x = Screen.width - screenPosition.x;
+
+                    screenPosition.y = Mathf.Clamp(
+                        screenPosition.y,
+                        half_dimension,
+                        Screen.height - half_dimension
+                        );
+
+                    screenPosition.y = Screen.height - screenPosition.y;
+
+                    GUI.DrawTexture(
+                        new Rect(
+                            screenPosition.x - half_dimension,
+                            screenPosition.y - half_dimension,
+                            dimension,
+                            dimension
+                            ),
+                        BulletWarningTexture
+                        );
+                }
+            }
+        }
+    }
 }
