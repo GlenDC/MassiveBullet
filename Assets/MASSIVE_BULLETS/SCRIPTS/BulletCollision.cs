@@ -31,7 +31,7 @@ public class BulletCollision : MonoBehaviour
     {
         if( other.gameObject.tag == TAGS.PLAYER_COLLISION )
         {
-            Debug.Log( "HIT!" );
+            other.transform.parent.gameObject.GetComponent< Player >().OnGameOver();
         }
     }
 }

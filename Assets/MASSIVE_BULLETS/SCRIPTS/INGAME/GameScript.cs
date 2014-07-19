@@ -110,7 +110,7 @@ public class GameScript : MonoBehaviour
         // "reset" game
         Initialize();
 
-        var bullets = GameScript.GetBullets();
+        var bullets = GameObject.FindGameObjectsWithTag( TAGS.BULLET );
  
         for( int i = 0; i < bullets.Length; ++i )
         {

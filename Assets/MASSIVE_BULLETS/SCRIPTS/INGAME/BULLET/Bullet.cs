@@ -5,8 +5,8 @@ public class Bullet : MonoBehaviour
 {
     const float SPEED = 2500.0f;
 
-    const float MIN_DISTANCE = 2.5f;
-    const float MAX_DISTANCE = 5.0f;
+    const float MIN_DISTANCE = 4.5f;
+    const float MAX_DISTANCE = 6.0f;
 
     const float MIN_ROTATION_TIME = 3.0f;
     const float MAX_ROTATION_TIME = 10.0f;
@@ -34,6 +34,8 @@ public class Bullet : MonoBehaviour
     static int GROUP_COUNTER = 0;
 
     Vector3 direction, originalDirection, targetDirection;
+
+    bool YFlipBlocked = false;
 
     public void SetDirection( Vector3 dir )
     {
@@ -93,17 +95,31 @@ public class Bullet : MonoBehaviour
             distance = 0.0f;
         }
 
+        if( !YFlipBlocked && transform.position.y < 1.0f )
+        {
+            direction.y *= -1.0f;
+            YFlipBlocked = true;
+        }
+        else if( YFlipBlocked && transform.position.y > 1.0f )
+        {
+            YFlipBlocked = false;
+        }
+
         targetDirection = player.position - transform.position;
         distance = targetDirection.magnitude;
         targetDirection.Normalize();
 
+        if( transform.localScale.x < 4.0f )
+        {
+            transform.localScale *= 1.0f + 5.0f * Time.deltaTime;
+        }
+        else
+        {
+            PhysicsBullet.active = true;
+        }
+
         if( state == BULLET_STATE.GOING )
         {
-            if( transform.localScale.x < 3.0f )
-            {
-                transform.localScale *= 1.0f + Time.deltaTime;
-            }
-
             if( distance > MAX_DISTANCE )
             {
                 state = BULLET_STATE.RETURNING;
@@ -117,8 +133,6 @@ public class Bullet : MonoBehaviour
                 RotationTime.z = gameScript.GetRandomFloat( MIN_ROTATION_TIME, MAX_ROTATION_TIME );
 
                 originalDirection = direction;
-
-                PhysicsBullet.active = true;
             }
 
             rigidBody.velocity = direction * SPEED * Time.deltaTime;
