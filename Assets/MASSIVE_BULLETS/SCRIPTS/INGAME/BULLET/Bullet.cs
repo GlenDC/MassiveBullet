@@ -3,13 +3,16 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour
 {
-    const float SPEED = 1000.0f;
+    const float SPEED = 2500.0f;
 
     const float MIN_DISTANCE = 0.5f;
     const float MAX_DISTANCE = 10.0f;
 
     const float MIN_ROTATION_TIME = 3.0f;
     const float MAX_ROTATION_TIME = 10.0f;
+
+    [SerializeField]
+        Transform VisualBullet;
 
     Vector3 Velocity
         { get { return transform.forward * SPEED * Time.deltaTime; } }
@@ -86,5 +89,6 @@ public class Bullet : MonoBehaviour
             rigidBody.velocity = direction * SPEED * Time.deltaTime;
         }
 
+        VisualBullet.rotation = Quaternion.LookRotation( transform.position - direction );
     }
 }
