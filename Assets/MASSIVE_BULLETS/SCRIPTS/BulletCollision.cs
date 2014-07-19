@@ -19,7 +19,12 @@ public class BulletCollision : MonoBehaviour
         }
         else if( other.gameObject.tag == TAGS.BULLET_COLLISION )
         {
-            if( BulletInfo.groupID != other.gameObject.transform.parent.GetComponent< Bullet >().groupID )
+            Bullet
+                otherBullet;
+
+            otherBullet = other.gameObject.transform.parent.GetComponent< Bullet >();
+
+            if( !otherBullet.IsDead && !BulletInfo.IsDead && BulletInfo.groupID != otherBullet.groupID )
             {
                 Destroy( other.transform.parent.gameObject );
                 Destroy( transform.parent.gameObject );

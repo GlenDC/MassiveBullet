@@ -16,6 +16,8 @@ public class Bullet : MonoBehaviour
 
     Rigidbody rigidBody;
 
+    public bool IsDead;
+
     BULLET_STATE state;
 
     Transform player;
@@ -57,6 +59,8 @@ public class Bullet : MonoBehaviour
         groupID = GROUP_COUNTER;
 
         YFlipBlocked = false;
+
+        IsDead = false;
 
         if( ++BULLET_COUNTER >= ( int ) BULLET_TYPE.COUNT )
         {

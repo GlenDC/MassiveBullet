@@ -54,6 +54,8 @@ public class GameScript : MonoBehaviour
 
         config = GameScript.GetConfig();
 
+        Screen.lockCursor = true;
+
         random = new Random();
     }
 
@@ -77,6 +79,7 @@ public class GameScript : MonoBehaviour
 
         if( Input.GetKey( KeyCode.Escape ) )
         {
+            Screen.lockCursor = false;
             Quit();
         }
     }
