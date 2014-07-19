@@ -89,7 +89,8 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         float
-            distance;
+            distance,
+            speed;
 
         if( direction == Vector3.zero )
         {
@@ -110,6 +111,13 @@ public class Bullet : MonoBehaviour
             PhysicsBullet.active = true;
         }
 
+        speed = SPEED;
+
+        if( distance < MIN_DISTANCE )
+        {
+            speed *= Mathf.Clamp( distance / MIN_DISTANCE, 0.35f, 1.0f );
+        }
+
         if( state == BULLET_STATE.GOING )
         {
             if( distance > MAX_DISTANCE )
@@ -127,7 +135,7 @@ public class Bullet : MonoBehaviour
                 originalDirection = direction;
             }
 
-            rigidBody.velocity = direction * SPEED * Time.deltaTime;
+            rigidBody.velocity = direction * speed * Time.deltaTime;
         }
         else // returning
         {
@@ -137,7 +145,7 @@ public class Bullet : MonoBehaviour
             direction.y = Mathf.Lerp( originalDirection.y, targetDirection.y, currentTiming / RotationTime.y );
             direction.z = Mathf.Lerp( originalDirection.z, targetDirection.z, currentTiming / RotationTime.z );
 
-            rigidBody.velocity = direction * SPEED * Time.deltaTime;
+            rigidBody.velocity = direction * speed * Time.deltaTime;
 
             if( distance < MIN_DISTANCE )
             {
@@ -148,6 +156,10 @@ public class Bullet : MonoBehaviour
         if( PhysicsBullet.transform.position.y < 1.0f && direction.y < 0.0f )
         {
             direction.y *= -1.0f;
+        }
+        else if( PhysicsBullet.transform.position.y < -1.0f )
+        {
+            Destroy( gameObject );
         }
 
         transform.LookAt( transform.position + direction );
