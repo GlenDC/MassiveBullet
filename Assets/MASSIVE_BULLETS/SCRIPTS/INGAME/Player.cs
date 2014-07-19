@@ -61,6 +61,12 @@ public class Player : MonoBehaviour
         SpawnPlayer();
         shootTimer = 0.0f;
         gameScript.OnGameOver();
+
+        var soundEffect = ( GameObject ) Instantiate( Resources.Load( "SOUND_NODE" ) );
+        soundEffect.transform.position = transform.position;
+
+        var audioScript = soundEffect.GetComponent< AmmoShotAudio >();
+        audioScript.SetAudioSource( 9 );
     }
 
     void ShootBullet( Vector3 offset )

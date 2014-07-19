@@ -28,6 +28,8 @@ public class BulletCollision : MonoBehaviour
             {
 				PlayBulletFeedback();
 
+                PlayExplosionSound( otherBullet.type, BulletInfo.type );
+
 				Destroy( other.transform.parent.gameObject );
                 Destroy( transform.parent.gameObject );
 
@@ -36,12 +38,34 @@ public class BulletCollision : MonoBehaviour
         }
     }
 
-	void PlayBulletFeedback(){
-
+	void PlayBulletFeedback()
+    {
 		GameObject score_popup_object = ( GameObject ) Instantiate( Resources.Load( "ScorePopUpPrefab" ) );
 
 		score_popup_object.transform.position = this.transform.position;
 
 		score_popup_object.GetComponent<ScorePopUpScript>().SetUpScorePopUp(1,0);
 	}
+
+    void PlayExplosionSound( BULLET_TYPE a, BULLET_TYPE b )
+    {
+        GameObject
+            soundEffect;
+        AmmoShotAudio
+            audio;
+
+        soundEffect = ( GameObject ) Instantiate( Resources.Load( "SOUND_NODE" ) );
+        soundEffect.transform.position = transform.position;
+
+        audio = soundEffect.GetComponent< AmmoShotAudio >();
+
+        if( a == BULLET_TYPE.YELLOW && b == BULLET_TYPE.YELLOW )
+        {
+            audio.SetAudioSource( 10 );
+        }
+        else
+        {
+            audio.SetAudioSource( ( (int) a + (int) b ) * 2 );
+        }
+    }
 }

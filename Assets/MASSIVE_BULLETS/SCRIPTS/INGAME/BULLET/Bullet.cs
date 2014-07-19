@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
     Vector3 RotationTime;
     float currentTiming;
 
-    BULLET_TYPE type;
+    public BULLET_TYPE type { get; private set; }
     public int groupID { get; protected set; }
 
     static int BULLET_COUNTER = 0;
