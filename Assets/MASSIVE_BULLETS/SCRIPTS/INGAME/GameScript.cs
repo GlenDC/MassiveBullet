@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using Facebook.MiniJSON;
+using System;
 
 public class GameScript : MonoBehaviour
 {
@@ -38,7 +41,7 @@ public class GameScript : MonoBehaviour
 
     public bool GameIsActive { get { return CurrentPauseTime >= MAX_PAUSE_TIME; } }
 
-    Random random;
+    UnityEngine.Random random;
 
     Config
         config;
@@ -61,7 +64,7 @@ public class GameScript : MonoBehaviour
 
         Screen.lockCursor = true;
 
-        random = new Random();
+        random = new UnityEngine.Random();
 
         CurrentPauseTime = MAX_PAUSE_TIME / 2.0f;
     }
@@ -159,11 +162,43 @@ public class GameScript : MonoBehaviour
         GameBullets = new GameObject[0];
     }
 
+    delegate void LoadPictureCallback (Texture texture);
+
+    IEnumerator LoadPictureEnumerator(string url, LoadPictureCallback callback)
+    {
+        WWW www = new WWW(url);
+        yield return www;
+        callback(www.texture);
+    }
+
+    void LoadPicture (string url, LoadPictureCallback callback)
+    {
+        FB.API(url,Facebook.HttpMethod.GET,result =>
+        {
+            if (result.Error != null)
+            {
+                Util.LogError(result.Error);
+                return;
+            }
+
+            var imageUrl = Util.DeserializePictureURLString(result.Text);
+
+            StartCoroutine(LoadPictureEnumerator(imageUrl,callback));
+        });
+    }
+
     public void OnGameOver()
     {
         if( gameScore > config.highscore )
         {
             config.highscore = gameScore;
+
+            if( FB.IsLoggedIn )
+            {
+                var query = new Dictionary<string, string>();
+                query["score"] = gameScore.ToString();
+                FB.API("/me/scores", Facebook.HttpMethod.POST, delegate(FBResult r) { Util.Log("Result: " + r.Text); }, query);
+            }
         }
 
         // "reset" game
@@ -204,11 +239,11 @@ public class GameScript : MonoBehaviour
 
     public float GetRandomFloat( float min, float max )
     {
-        return Random.Range( min, max );
+        return UnityEngine.Random.Range( min, max );
     }
 
     public int GetRandomInt( int min, int max )
     {
-        return Random.Range( min, max );
+        return UnityEngine.Random.Range( min, max );
     }
 }

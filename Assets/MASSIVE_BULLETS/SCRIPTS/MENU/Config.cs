@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using Facebook.MiniJSON;
+using System;
 
 public class Config : MonoBehaviour
 {
@@ -62,6 +65,15 @@ public class Config : MonoBehaviour
     static public string
         FacebookName { get; private set; }
 
+    public struct ScoreInformation
+    {
+        public int score;
+        public string name;
+        public Texture picture;
+    };
+
+    public List<ScoreInformation> HighScores { get; private set; }
+
     void Start ()
     {
         _HandState =
@@ -77,6 +89,8 @@ public class Config : MonoBehaviour
         _highscore = PlayerPrefs.GetInt(
             HIGHSCORE_HANDLE, 0
             );
+
+        HighScores = new List<ScoreInformation>();
 
         if( FacebookSelfie == null )
         {
@@ -166,6 +180,8 @@ public class Config : MonoBehaviour
         // Reqest player info and profile picture    
         FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, APICallback);  
         LoadPicture(Util.GetPictureURL("me", 256, 256), MyPictureCallback);
+
+        retrieveHighscores();
     }
 
     delegate void LoadPictureCallback (Texture texture);
@@ -205,5 +221,53 @@ public class Config : MonoBehaviour
         }
 
         FacebookSelfie = texture;
+    }
+
+    public void retrieveHighscores()
+    {
+        FB.API("/app/scores?fields=score,user.limit(10)", Facebook.HttpMethod.GET, ScoresCallback);
+    }
+
+    private int getScoreFromEntry(object obj)
+    {
+        Dictionary<string,object> entry = (Dictionary<string,object>) obj;
+        return Convert.ToInt32(entry["score"]);
+    }
+
+    void ScoresCallback(FBResult result) 
+    {
+        Debug.Log("ScoresCallback");
+        if (result.Error != null)
+        {
+            Debug.LogError(result.Error);
+            return;
+        }
+
+        HighScores = new List<ScoreInformation>();
+        List<object> scoresList = Util.DeserializeScores(result.Text);
+
+        foreach(object score in scoresList) 
+        {
+            ScoreInformation
+                scoreInfo = new ScoreInformation();
+
+            var entry = (Dictionary<string,object>) score;
+            var user = (Dictionary<string,object>) entry["user"];
+
+            string userId = (string)user["id"];
+
+            scoreInfo.name = (string)user["first_name"];
+            scoreInfo.score = getScoreFromEntry(entry);
+
+            LoadPicture(Util.GetPictureURL(userId, 128, 128),pictureTexture =>
+            {
+                if (pictureTexture != null)
+                {
+                    scoreInfo.picture = pictureTexture;
+                }
+            });
+
+            HighScores.Add( scoreInfo );
+        }
     }
 }

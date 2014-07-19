@@ -242,16 +242,43 @@ public class Menu : MonoBehaviour
 			Application.LoadLevelAdditive( "credits_menu" );
         }
 
-        // test fb
+        if( Screen.width > 768 )
+        {
+            // test fb
 
-        GUI.DrawTexture(
-            new Rect( 10, 10, 100, 100 ),
-            Config.FacebookSelfie
-            );
+            GUI.DrawTexture(
+                new Rect( 10, 10, 100, 100 ),
+                Config.FacebookSelfie
+                );
 
-        GUI.TextField(
-            new Rect( 10, 110, 100, 20),
-            Config.FacebookName
-            );
+            GUI.TextField(
+                new Rect( 10, 110, 100, 20),
+                Config.FacebookName
+                );
+
+            // highscores
+
+            int heightY = 135;
+
+            foreach( Config.ScoreInformation score in configScript.HighScores )
+            {
+                GUI.DrawTexture(
+                    new Rect( 10, heightY, 20, 20 ),
+                    score.picture
+                    );
+
+                GUI.TextField(
+                    new Rect( 40, heightY, 100, 20),
+                    score.name
+                    );
+
+                GUI.TextField(
+                    new Rect( 150, heightY, 80, 20),
+                    score.score.ToString()
+                    );
+
+                heightY += 25;
+            }
+        }
     }
 }
