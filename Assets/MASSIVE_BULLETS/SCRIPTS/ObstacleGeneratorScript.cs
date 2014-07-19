@@ -90,6 +90,14 @@ public class ObstacleGeneratorScript : MonoBehaviour {
 			PuddleArray[j].transform.parent = this.transform;
 			PuddleArray[j].name = this.name + "_puddle_" + j;
 			PuddleArray[j].renderer.material = PuddleObjectMaterial;
+
+			var rb = PuddleArray[j].AddComponent< Rigidbody >();
+
+			rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+
+			rb.useGravity = false;
+			rb.freezeRotation = true;
+			rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 			
 			PuddleArray[j].transform.RotateAround(PuddleArray[j].transform.position,Vector3.right,-90.0f);
 
@@ -110,6 +118,14 @@ public class ObstacleGeneratorScript : MonoBehaviour {
 			TotemArray[t].transform.parent = this.transform;
 			TotemArray[t].name = this.name + "_totem_" + t;
 			TotemArray[t].renderer.material = TentacleObjectMaterial;
+
+			var rb = TotemArray[t].AddComponent< Rigidbody >();
+
+			rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+
+			rb.useGravity = false;
+			rb.freezeRotation = true;
+			rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 			
 			TotemArray[t].transform.RotateAround(TotemArray[t].transform.position,Vector3.right,-90.0f);
 			

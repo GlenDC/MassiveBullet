@@ -11,6 +11,11 @@ public class BulletCollision : MonoBehaviour
         BulletInfo.PhysicsBullet.active = false;
     }
 
+    void OnCollisionEnter( Collision collision )
+    {
+        BulletInfo.ReverseDirection();
+    }
+
     void OnTriggerEnter( Collider other )
     {
         if( other.gameObject.tag == TAGS.PLAYER_COLLISION )

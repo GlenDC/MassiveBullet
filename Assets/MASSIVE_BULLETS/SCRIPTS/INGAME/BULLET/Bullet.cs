@@ -45,6 +45,17 @@ public class Bullet : MonoBehaviour
         direction.Normalize();
     }
 
+    const float MAX_BLOCK_TIME = 0.5f;
+    float block_reverse_time = MAX_BLOCK_TIME;
+
+    public void ReverseDirection()
+    {
+        if( block_reverse_time < MAX_BLOCK_TIME )
+        {
+            direction *= -1.0f;
+        }
+    }
+
     void Start()
     {
         player = GameObject.FindWithTag( TAGS.PLAYER ).transform;
@@ -92,6 +103,11 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
+        if( block_reverse_time < MAX_BLOCK_TIME )
+        {
+            block_reverse_time += Time.deltaTime;
+        }
+
         float
             distance,
             speed;
@@ -157,14 +173,14 @@ public class Bullet : MonoBehaviour
             }
         }
 
-        if( PhysicsBullet.transform.position.y < 1.0f && direction.y < 0.0f )
+        /*if( PhysicsBullet.transform.position.y < 1.0f && direction.y < 0.0f )
         {
             direction.y *= -1.0f;
         }
         else if( PhysicsBullet.transform.position.y < -1.0f )
         {
             Destroy( gameObject );
-        }
+        }*/
 
         transform.LookAt( transform.position + direction );
     }
