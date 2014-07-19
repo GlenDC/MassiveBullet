@@ -218,5 +218,17 @@ public class Menu : MonoBehaviour
         {
             Application.Quit();
         }
+
+        // test fb
+
+        GUI.DrawTexture(
+            new Rect( 10, 10, 100, 100 ),
+            configScript.FacebookSelfie
+            );
+
+        GUI.TextField(
+            new Rect( 10, 110, 100, 20),
+            configScript.FacebookName
+            );
     }
 }

@@ -53,6 +53,15 @@ public class Config : MonoBehaviour
             }
         }
 
+    public bool
+        FacebookIsInitialized { get; private set; }
+
+    public Texture
+        FacebookSelfie { get; private set; }
+
+    public string
+        FacebookName { get; private set; }
+
     void Start ()
     {
         _HandState =
@@ -68,6 +77,13 @@ public class Config : MonoBehaviour
         _highscore = PlayerPrefs.GetInt(
             HIGHSCORE_HANDLE, 0
             );
+
+        FacebookIsInitialized = false;
+        FacebookSelfie = null;
+        FB.Init(OnInitComplete, OnHideUnity);
+
+        FacebookSelfie = ( Texture ) Instantiate( Resources.Load( "DEFAULT_PROFILE_PIC" ) );
+        FacebookName = "Ranger \"Glen\"";
     }
 
     public float GetLateralMovement()
@@ -102,5 +118,82 @@ public class Config : MonoBehaviour
         }
 
         return movement + ( Input.GetKey( KeyCode.D ) ? 1.0f : 0.0f );
+    }
+
+    void OnInitComplete()
+    {
+        FacebookIsInitialized = true;
+        if( FB.IsLoggedIn )
+        {
+            OnLoggedIn();
+        }
+    }
+
+    void OnHideUnity(bool isGameShown)
+    {
+        Debug.Log("Is game showing? " + isGameShown);
+    }
+
+    void APICallback(FBResult result)
+    {
+        Util.Log("APICallback");
+        if (result.Error != null)
+        {
+            Util.LogError(result.Error);
+            // Let's just try again
+            FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, APICallback);
+            return;
+        }
+
+        var profile = Util.DeserializeJSONProfile(result.Text);
+        FacebookName = "Ranger \"" + profile["first_name"] + "\"";
+    }
+
+    void OnLoggedIn()
+    {
+        Util.Log("Logged in. ID: " + FB.UserId);
+
+        // Reqest player info and profile picture    
+        FB.API("/me?fields=id,first_name,friends.limit(100).fields(first_name,id)", Facebook.HttpMethod.GET, APICallback);  
+        LoadPicture(Util.GetPictureURL("me", 256, 256), MyPictureCallback);
+    }
+
+    delegate void LoadPictureCallback (Texture texture);
+
+    IEnumerator LoadPictureEnumerator(string url, LoadPictureCallback callback)
+    {
+        WWW www = new WWW(url);
+        yield return www;
+        callback(www.texture);
+    }
+
+    void LoadPicture (string url, LoadPictureCallback callback)
+    {
+        FB.API(url,Facebook.HttpMethod.GET,result =>
+        {
+            if (result.Error != null)
+            {
+                Util.LogError(result.Error);
+                return;
+            }
+
+            var imageUrl = Util.DeserializePictureURLString(result.Text);
+
+            StartCoroutine(LoadPictureEnumerator(imageUrl,callback));
+        });
+    }
+
+    void MyPictureCallback(Texture texture)
+    {
+        Util.Log("MyPictureCallback");
+
+        if (texture == null)
+        {
+            // Let's just try again
+            LoadPicture(Util.GetPictureURL("me", 256, 256), MyPictureCallback);
+            return;
+        }
+
+        FacebookSelfie = texture;
     }
 }
