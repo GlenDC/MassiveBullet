@@ -66,6 +66,16 @@ public class GameScript : MonoBehaviour
         CurrentPauseTime = MAX_PAUSE_TIME / 2.0f;
     }
 
+    static void PlaySound( Vector3 position, int audio, float volume = 1.0f )
+    {
+        var soundEffect = ( GameObject ) Instantiate( Resources.Load( "SOUND_NODE" ) );
+        soundEffect.transform.position = position;
+        soundEffect.GetComponent< AudioSource >().volume = volume;
+
+        var audioScript = soundEffect.GetComponent< AmmoShotAudio >();
+        audioScript.SetAudioSource( audio );
+    }
+
     void Update()
     {
         if( GameIsActive )

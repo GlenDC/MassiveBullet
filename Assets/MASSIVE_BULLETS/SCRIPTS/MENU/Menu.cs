@@ -163,6 +163,21 @@ public class Menu : MonoBehaviour
         configScript.KeyboardState = KEYBOARD_STATE.AZERTY;
     }
 
+    void PlayActionSound()
+    {
+        GameScript.PlaySound( camera.transform.position, 3 );
+    }
+
+    void PlayLeftSound()
+    {
+        GameScript.PlaySound( camera.transform.position, 5 );
+    }
+
+    void PlayRightSound()
+    {
+        GameScript.PlaySound( camera.transform.position, 7 );
+    }
+
     void OnGUI()
     {
 		if( GUI.Button(
