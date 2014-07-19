@@ -19,9 +19,10 @@ public class CreditMenuManager : MonoBehaviour
 
 	// Use this for initialization
 	void Start () {
-
 		thrash =
 			GameObject.FindWithTag( TAGS.THRASH ).gameObject;
+
+    	GameScript.PlaySound( camera.transform.position, 3, 0.5f );
 	}
 	
 	// Update is called once per frame

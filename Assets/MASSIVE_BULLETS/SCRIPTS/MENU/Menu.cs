@@ -60,6 +60,8 @@ public class Menu : MonoBehaviour
         {
             SetQwerty();
         }
+
+        PlayActionSound();
     }
 
     struct ToggleButton
@@ -165,17 +167,17 @@ public class Menu : MonoBehaviour
 
     void PlayActionSound()
     {
-        GameScript.PlaySound( camera.transform.position, 3 );
+        GameScript.PlaySound( camera.transform.position, 3, 0.5f );
     }
 
     void PlayLeftSound()
     {
-        GameScript.PlaySound( camera.transform.position, 5 );
+        GameScript.PlaySound( camera.transform.position, 5, 0.5f );
     }
 
     void PlayRightSound()
     {
-        GameScript.PlaySound( camera.transform.position, 7 );
+        GameScript.PlaySound( camera.transform.position, 7, 0.5f );
     }
 
     void OnGUI()
@@ -187,6 +189,7 @@ public class Menu : MonoBehaviour
                 ) )
         {
             SetLeftHanded();
+            PlayLeftSound();
         }
 
         if( GUI.Button(
@@ -196,6 +199,7 @@ public class Menu : MonoBehaviour
                 ) )
         {
             SetRightHanded();
+            PlayRightSound();
         }
 
         if( GUI.Button(
@@ -205,6 +209,7 @@ public class Menu : MonoBehaviour
                 ) )
         {
             SetAzerty();
+            PlayLeftSound();
         }
 
         if( GUI.Button(
@@ -214,6 +219,7 @@ public class Menu : MonoBehaviour
                 ) )
         {
             SetQwerty();
+            PlayRightSound();
         }
 
         if( GUI.Button(

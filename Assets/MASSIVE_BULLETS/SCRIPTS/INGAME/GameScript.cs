@@ -66,7 +66,7 @@ public class GameScript : MonoBehaviour
         CurrentPauseTime = MAX_PAUSE_TIME / 2.0f;
     }
 
-    static void PlaySound( Vector3 position, int audio, float volume = 1.0f )
+    public static void PlaySound( Vector3 position, int audio, float volume = 1.0f )
     {
         var soundEffect = ( GameObject ) Instantiate( Resources.Load( "SOUND_NODE" ) );
         soundEffect.transform.position = position;
@@ -140,7 +140,7 @@ public class GameScript : MonoBehaviour
 
     void Quit()
     {
-        Application.LoadLevel( "start_menu" );
+        Application.LoadLevel( "startup_scene" );
     }
 
     void Initialize()
