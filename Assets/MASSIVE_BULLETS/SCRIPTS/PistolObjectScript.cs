@@ -7,6 +7,10 @@ public class PistolObjectScript : MonoBehaviour {
 	void Start () {
 	
 	}
+
+	public void SetUpPistolObject(){
+
+	}
 	
 	// Update is called once per frame
 	void Update () {
