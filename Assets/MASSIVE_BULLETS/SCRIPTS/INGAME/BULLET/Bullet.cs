@@ -22,15 +22,16 @@ public class Bullet : MonoBehaviour
 
     GameScript gameScript;
 
-    [SerializeField]
-    GameObject PhysicsBullet;
+    public GameObject PhysicsBullet;
 
     Vector3 RotationTime;
     float currentTiming;
 
     BULLET_TYPE type;
+    public int groupID { get; protected set; }
 
     static int BULLET_COUNTER = 0;
+    static int GROUP_COUNTER = 0;
 
     Vector3 direction, originalDirection, targetDirection;
 
@@ -51,10 +52,12 @@ public class Bullet : MonoBehaviour
         direction = Vector3.zero;
 
         type = ( BULLET_TYPE ) BULLET_COUNTER;
+        groupID = GROUP_COUNTER;
 
-        if( BULLET_COUNTER++ >= ( int ) BULLET_TYPE.COUNT )
+        if( ++BULLET_COUNTER >= ( int ) BULLET_TYPE.COUNT )
         {
             BULLET_COUNTER = 0;
+            ++GROUP_COUNTER;
         }
 
         switch( type )
@@ -96,6 +99,11 @@ public class Bullet : MonoBehaviour
 
         if( state == BULLET_STATE.GOING )
         {
+            if( transform.localScale.x < 3.0f )
+            {
+                transform.localScale *= 1.0f + Time.deltaTime;
+            }
+
             if( distance > MAX_DISTANCE )
             {
                 state = BULLET_STATE.RETURNING;

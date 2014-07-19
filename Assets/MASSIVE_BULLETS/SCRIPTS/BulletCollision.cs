@@ -3,18 +3,35 @@ using System.Collections;
 
 public class BulletCollision : MonoBehaviour
 {
+    public Bullet BulletInfo { get; private set; }
+
+    void Start()
+    {
+        BulletInfo = transform.parent.gameObject.GetComponent< Bullet >();
+        BulletInfo.PhysicsBullet.active = false;
+    }
+
     void OnCollisionEnter( Collision collision )
     {
         if( collision.gameObject.tag == TAGS.BULLET_COLLISION )
         {
-            Destroy( collision.transform.parent.gameObject );
-            Destroy( transform.parent.gameObject );
+            if( BulletInfo.groupID != collision.gameObject.GetComponent< BulletCollision >().BulletInfo.groupID )
+            {
+                Destroy( collision.transform.parent.gameObject );
+                Destroy( transform.parent.gameObject );
 
-            GameObject.FindWithTag( TAGS.WORLD ).GetComponent< GameScript >().RemoveBullet();
+                GameObject.FindWithTag( TAGS.WORLD ).GetComponent< GameScript >().RemoveBullet();
+
+                Debug.Log( "Kill!" );
+            }
         }
-        else if( collision.gameObject.tag == TAGS.PLAYER_COLLISION )
+    }
+
+    void OnTriggerEnter( Collider other )
+    {
+        if( other.gameObject.tag == TAGS.PLAYER_COLLISION )
         {
-            collision.gameObject.GetComponent< Player >().OnGameOver();
+            Debug.Log( "HIT!" );
         }
     }
 }
