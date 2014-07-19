@@ -129,6 +129,8 @@ public class GameScript : MonoBehaviour
         --bulletCount;
         GameBullets = GameObject.FindGameObjectsWithTag( TAGS.BULLET );
 
+        AddScore( 50 * ( timeScoreObject.GetIdentifier() + 1 ) );
+
         if( hitCounter++ > 5)
         {
             hitCounter = 0;

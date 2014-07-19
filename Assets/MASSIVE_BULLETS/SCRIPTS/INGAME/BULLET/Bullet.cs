@@ -56,6 +56,8 @@ public class Bullet : MonoBehaviour
         type = ( BULLET_TYPE ) BULLET_COUNTER;
         groupID = GROUP_COUNTER;
 
+        YFlipBlocked = false;
+
         if( ++BULLET_COUNTER >= ( int ) BULLET_TYPE.COUNT )
         {
             BULLET_COUNTER = 0;
@@ -93,16 +95,6 @@ public class Bullet : MonoBehaviour
         {
             direction = transform.forward;
             distance = 0.0f;
-        }
-
-        if( !YFlipBlocked && transform.position.y < 1.0f )
-        {
-            direction.y *= -1.0f;
-            YFlipBlocked = true;
-        }
-        else if( YFlipBlocked && transform.position.y > 1.0f )
-        {
-            YFlipBlocked = false;
         }
 
         targetDirection = player.position - transform.position;
@@ -151,6 +143,11 @@ public class Bullet : MonoBehaviour
             {
                 state = BULLET_STATE.GOING;
             }
+        }
+
+        if( PhysicsBullet.transform.position.y < 1.0f && direction.y < 0.0f )
+        {
+            direction.y *= -1.0f;
         }
 
         transform.LookAt( transform.position + direction );
