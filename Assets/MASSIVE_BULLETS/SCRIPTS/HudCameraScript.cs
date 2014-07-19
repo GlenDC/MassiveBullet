@@ -73,6 +73,11 @@ public class HudCameraScript : MonoBehaviour
         PistolObject.GetComponent<PistolObjectScript>().SetUpPistolObject();
     }
 
+	public void ShootPistol(){
+
+		//PistolObject.GetComponent<Animator>().Play();
+	}
+
     void OnGUI()
     {
         var bullets = GameObject.FindGameObjectsWithTag( TAGS.BULLET );
