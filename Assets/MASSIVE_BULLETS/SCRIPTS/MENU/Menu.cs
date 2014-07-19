@@ -4,6 +4,7 @@ using System.Collections;
 public class Menu : MonoBehaviour
 {
     Config configScript;
+    GameObject thrash;
 
     protected int HSEH { get { return Screen.height / 2; } }
     protected int HSEW { get { return Screen.width / 2; } }
@@ -12,6 +13,9 @@ public class Menu : MonoBehaviour
     {
         configScript =
             GameObject.FindWithTag( TAGS.CONFIG ).GetComponent< Config >();
+
+        thrash =
+            GameObject.FindWithTag( TAGS.THRASH ).gameObject;
 
         leftHandButton = new ToggleButton();
         rightHandButton = new ToggleButton();
@@ -139,6 +143,23 @@ public class Menu : MonoBehaviour
                 ) )
         {
             SetQwerty();
+        }
+
+        if( GUI.Button(
+                new Rect( HSEW - 100, HSEH + 150, 200, 25 ),
+                "START GAME"
+                ) )
+        {
+            Destroy( thrash );
+            Application.LoadLevelAdditive( "main" );
+        }
+
+        if( GUI.Button(
+                new Rect( HSEW - 100, HSEH + 200, 200, 25 ),
+                "QUIT"
+                ) )
+        {
+            Application.Quit();
         }
     }
 }
