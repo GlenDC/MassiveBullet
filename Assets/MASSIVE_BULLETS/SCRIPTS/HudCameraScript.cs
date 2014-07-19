@@ -52,7 +52,7 @@ public class HudCameraScript : MonoBehaviour
 
     public void SetUpHUDCamera( bool playerIsRightHanded )
     {
-        if ( !playerIsRightHanded )
+		if ( !playerIsRightHanded )
         {
             PistolPosition.x -= PistolPosition.x * 2;
             PistolOrientation.x += 2 * Mathf.PI;
@@ -75,7 +75,7 @@ public class HudCameraScript : MonoBehaviour
 
 	public void ShootPistol(){
 
-		//PistolObject.GetComponent<Animator>().Play();
+		PistolObject.GetComponent<PistolObjectScript>().PlayShootAnimation();
 	}
 
     void OnGUI()

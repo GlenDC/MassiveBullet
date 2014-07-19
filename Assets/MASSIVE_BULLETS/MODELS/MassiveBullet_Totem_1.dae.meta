@@ -1,21 +1,14 @@
 fileFormatVersion: 2
-guid: fee4cb7ba18d04ce89a5fe0c98bc428e
+guid: 46190487a79d548f4b9c3d2ee08b83a6
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
-    100000: Camera
-    100002: Cube
-    100004: Lamp
-    100006: //RootNode
-    400000: Camera
-    400002: Cube
-    400004: Lamp
-    400006: //RootNode
-    2300000: Cube
-    2300002: //RootNode
-    3300000: Cube
-    3300002: //RootNode
+    100000: //RootNode
+    400000: //RootNode
+    2300000: //RootNode
+    3300000: //RootNode
     4300000: Cube
+    6400000: //RootNode
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -37,7 +30,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
