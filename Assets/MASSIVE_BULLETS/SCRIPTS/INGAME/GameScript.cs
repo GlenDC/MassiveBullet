@@ -33,6 +33,9 @@ public class GameScript : MonoBehaviour
     public int gameScore { get; private set; }
     FibonacciObject timeScoreObject;
 
+    Config
+        config;
+
     public bool IsActive
     {
         get
@@ -44,6 +47,8 @@ public class GameScript : MonoBehaviour
     void Start()
     {
         Initialize();
+
+        config = GameScript.GetConfig();
     }
 
     void Update()
@@ -82,6 +87,12 @@ public class GameScript : MonoBehaviour
 
     public void OnGameOver()
     {
+        if( gameScore > config.highscore )
+        {
+            config.highscore = gameScore;
+        }
+
+        // "reset" game
         Initialize();
 
         var bullets = GameScript.GetBullets();

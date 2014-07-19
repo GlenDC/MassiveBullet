@@ -100,6 +100,11 @@ public class HudCameraScript : MonoBehaviour
                 new Rect( Screen.width / 2 - 130, Screen.height / 2 + 50, 260, 20),
                 "Fire some massive bullets and join the fun!"
                 );
+
+            GUI.TextField(
+                new Rect( Screen.width / 2 - 130, Screen.height / 2 + 100, 260, 20),
+                "Highscore: " + configScript.highscore
+                );
         }
     }
 
