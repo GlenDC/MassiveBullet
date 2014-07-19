@@ -98,8 +98,8 @@ public class Config : MonoBehaviour
             FacebookName = "Ranger \"Glen\"";
 
             // enable when publishing to fb
-            //FacebookIsInitialized = false;
-            //FB.Init(OnInitComplete, OnHideUnity);
+            // FacebookIsInitialized = false;
+            // FB.Init(OnInitComplete, OnHideUnity);
         }
     }
 
