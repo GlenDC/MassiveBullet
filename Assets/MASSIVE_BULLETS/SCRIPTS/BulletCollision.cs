@@ -14,6 +14,7 @@ public class BulletCollision : MonoBehaviour
     void OnCollisionEnter( Collision collision )
     {
         BulletInfo.ReverseDirection();
+        GameScript.PlaySound( collision.gameObject.transform.position, 10, 0.2f );
     }
 
     void OnTriggerEnter( Collider other )
