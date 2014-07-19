@@ -48,12 +48,16 @@ public class Player : MonoBehaviour
 			HUDCamera.GetComponent<HudCameraScript>().ShootPistol();
 
             shootTimer = 0.0f;
+
+            PlaySound( 1, 0.5f );
         }
     }
 
     void SpawnPlayer()
     {
         transform.position = gameSpawn.position;
+
+        PlaySound( 11, 0.35f );
     }
 
     public void OnGameOver()
@@ -62,11 +66,17 @@ public class Player : MonoBehaviour
         shootTimer = 0.0f;
         gameScript.OnGameOver();
 
+        PlaySound( 9 );
+    }
+
+    void PlaySound( int audio, float volume = 1.0f )
+    {
         var soundEffect = ( GameObject ) Instantiate( Resources.Load( "SOUND_NODE" ) );
         soundEffect.transform.position = transform.position;
+        soundEffect.GetComponent< AudioSource >().volume = volume;
 
         var audioScript = soundEffect.GetComponent< AmmoShotAudio >();
-        audioScript.SetAudioSource( 9 );
+        audioScript.SetAudioSource( audio );
     }
 
     void ShootBullet( Vector3 offset )

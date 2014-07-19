@@ -8,12 +8,10 @@ public class AmmoShotAudio : MonoBehaviour
     float
         liveTime,
         currentTime;
-    bool
-        isOK;
 
     void Start()
     {
-        isOK = false;
+        liveTime = 5.0f;
     }
 
     public void SetAudioSource( int audio, float time = 1.5f )
@@ -26,19 +24,14 @@ public class AmmoShotAudio : MonoBehaviour
 
         currentTime = 0.0f;
         liveTime = time;
-
-        isOK = true;
     }
 
     void Update()
     {
-        if( isOK )
+        currentTime += Time.deltaTime;
+        if( currentTime > liveTime )
         {
-            currentTime += Time.deltaTime;
-            if( currentTime > liveTime )
-            {
-                Destroy( gameObject );
-            }
+            Destroy( gameObject );
         }
     }
 }

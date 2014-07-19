@@ -45,7 +45,7 @@ public class ScorePopUpScript : MonoBehaviour {
 
 			if (!FloatingScoreObject.GetComponent<FloatingScoreObjectScript>().GetFloatingScoreOn()){
 
-				Destroy(this);
+				Destroy( gameObject );
 			}
 		}
 	}
