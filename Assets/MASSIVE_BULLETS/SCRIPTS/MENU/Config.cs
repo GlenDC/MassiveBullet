@@ -123,11 +123,18 @@ public class Config : MonoBehaviour
     void OnInitComplete()
     {
         FacebookIsInitialized = true;
-        if( FB.IsLoggedIn )
-        {
-            OnLoggedIn();
-        }
+        FB.Login("email,publish_actions", LoginCallback);
     }
+
+    void LoginCallback(FBResult result)                                                        
+    {                                                                                          
+        Util.Log("LoginCallback");                                                          
+
+        if (FB.IsLoggedIn)                                                                     
+        {                                                                                      
+            OnLoggedIn();                                                                      
+        }                                                                                      
+    }                                                                                          
 
     void OnHideUnity(bool isGameShown)
     {
