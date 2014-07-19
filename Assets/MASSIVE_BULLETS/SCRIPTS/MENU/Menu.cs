@@ -231,7 +231,9 @@ public class Menu : MonoBehaviour
 				QuitButton,GUIStyle.none
                 ) )
         {
-            Application.Quit();
+			this.GetComponent<StartMenuManager>().RemoveTitle();
+			Destroy( thrash );
+			Application.LoadLevelAdditive( "credits_menu" );
         }
 
         // test fb
