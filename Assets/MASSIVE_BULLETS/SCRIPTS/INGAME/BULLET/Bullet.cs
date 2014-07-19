@@ -65,7 +65,6 @@ public class Bullet : MonoBehaviour
             }
 
             block_reverse_time = 0.0f;
-            Debug.Log( "Reverse!" );
         }
     }
 
