@@ -19,6 +19,8 @@ public class ScorePopUpScript : MonoBehaviour {
 	bool
 		ScorePopUpOn;
 
+	float timer = 0.0f;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -40,6 +42,12 @@ public class ScorePopUpScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		timer += Time.deltaTime;
+		if( timer > 5.0f )
+		{
+			Destroy( gameObject );
+			return;
+		}
 
 		if (ScorePopUpOn){
 
