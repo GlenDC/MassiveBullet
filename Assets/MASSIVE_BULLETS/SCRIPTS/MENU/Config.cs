@@ -1,4 +1,68 @@
-﻿d
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using Facebook.MiniJSON;
+using System;
+
+public class Config : MonoBehaviour
+{
+    const string
+        HAND_HANDLE = "MASSIVE_BULLET_PF_STATE_HAND",
+        KEYBOARD_HANDLE = "MASSIVE_BULLET_PF_STATE_KEYBOARD",
+        HIGHSCORE_HANDLE = "MASSIVE_BULLET_PF_HIGHSCORE";
+
+    HAND_STATE _HandState;
+    public HAND_STATE
+        HandState
+        {
+            set
+            {
+                PlayerPrefs.SetInt( HAND_HANDLE, ( int ) value );
+                _HandState = value;
+            }
+            get
+            {
+                return _HandState;
+            }
+        }
+
+    KEYBOARD_STATE _KeyboardState;
+    public KEYBOARD_STATE
+        KeyboardState
+        {
+            set
+            {
+                PlayerPrefs.SetInt( KEYBOARD_HANDLE, ( int ) value );
+                _KeyboardState = value;
+            }
+            get
+            {
+                return _KeyboardState;
+            }
+        }
+
+    int _highscore;
+    public int
+        highscore
+        {
+            set
+            {
+                PlayerPrefs.SetInt( HIGHSCORE_HANDLE, value );
+                _highscore = value;
+            }
+            get
+            {
+                return _highscore;
+            }
+        }
+
+    public bool
+        FacebookIsInitialized { get; private set; }
+
+    static public Texture
+        FacebookSelfie { get; private set; }
+
+    static public string
         FacebookName { get; private set; }
 
     public struct ScoreInformation

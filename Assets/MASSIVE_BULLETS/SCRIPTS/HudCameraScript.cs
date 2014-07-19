@@ -96,19 +96,19 @@ public class HudCameraScript : MonoBehaviour
 
             if( gameScript.IsActive )
             {
-                GUI.TextField(
+                GUI.Label(
                     new Rect( 10, 10, 200, 20 ),
                     "Score: " + gameScript.gameScore
                     );
             }
             else
             {
-                GUI.TextField(
+                GUI.Label(
                     new Rect( Screen.width / 2 - 130, Screen.height / 2 + 50, 260, 20),
                     "Fire some massive bullets and join the fun!"
                     );
 
-                GUI.TextField(
+                GUI.Label(
                     new Rect( Screen.width / 2 - 130, Screen.height / 2 + 100, 260, 20),
                     "Highscore: " + configScript.highscore
                     );
