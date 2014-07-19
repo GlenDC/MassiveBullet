@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if( Input.GetButtonDown( "Fire" ) )
+        if( gameScript.GameIsActive && Input.GetButtonDown( "Fire" ) )
         {
             ShootBullet( new Vector3( 0.0f, 1.0f, 1.0f ) );
             ShootBullet( new Vector3( -1.0f, 0.0f, 1.0f ) );
