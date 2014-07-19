@@ -33,7 +33,7 @@ public class CreditMenuManager : MonoBehaviour
 	void OnGUI(){
 
 		if( GUI.Button(
-			new Rect( HSEW - 50, HSEH + 240, 107, 40 ),
+			new Rect( HSEW - 50, Screen.height - 50, 107, 40 ),
 			BackButton,GUIStyle.none
 			) )
 		{
