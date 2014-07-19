@@ -3,9 +3,6 @@ using System.Collections;
 
 public class FloatingScoreObjectScript : MonoBehaviour {
 
-	[ SerializeField ] GameObject
-		FloatingScoreObject;
-
 	[ SerializeField ] float
 		FloatingSpeed,
 		FadingSpeed;
@@ -13,18 +10,24 @@ public class FloatingScoreObjectScript : MonoBehaviour {
 	bool
 		FloatingScoreOn;
 
+	Transform
+		PlayerTransform;
+
 	// Use this for initialization
 	void Start () {
-	
+
+		PlayerTransform = GameObject.FindWithTag(TAGS.PLAYER).transform;
 	}
 
 	public void SetUpFloatingScore(int score_value, Material text_color){
 
-		FloatingScoreObject.GetComponent<TextMesh>().text = "+ " + score_value.ToString();
+		this.GetComponent<TextMesh>().text = "+ " + score_value.ToString();
 
-		FloatingScoreObject.GetComponent<TextMesh>().color = text_color.color;
+		this.GetComponent<TextMesh>().color = text_color.color;
 
 		FloatingScoreOn = true;
+
+		//this
 	}
 
 	public bool GetFloatingScoreOn(){
@@ -34,25 +37,29 @@ public class FloatingScoreObjectScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	
+		
 		if (FloatingScoreOn){
+
+			transform.LookAt(PlayerTransform.position);
+
+			//this.transform.Rotate(Vector3.up,Mathf.PI);
 
 			Vector3 floating_score_position = this.transform.position;
 
 			floating_score_position.y += FloatingSpeed * Time.deltaTime;
 
-			FloatingScoreObject.transform.position = floating_score_position;
+			this.transform.position = floating_score_position;
 
-			Color floating_score_color = FloatingScoreObject.GetComponent<TextMesh>().color;
+			Color floating_score_color = this.GetComponent<TextMesh>().color;
 
 			floating_score_color.a -= FadingSpeed;
 
 			if (floating_score_color.a < 0.0f){
 
-				FloatingScoreOn = false;
+				//FloatingScoreOn = false;
 			}
 
-			FloatingScoreObject.GetComponent<TextMesh>().color = floating_score_color;
+			this.GetComponent<TextMesh>().color = floating_score_color;
 		}
 	}
 }

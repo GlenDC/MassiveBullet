@@ -4,11 +4,15 @@ using System.Collections;
 public class ScorePopUpScript : MonoBehaviour {
 
 	[ SerializeField ] GameObject
+		ParticleEffect1,
+		ParticleEffect2;
+
+	[ SerializeField ] GameObject
 		FloatingScorePrefab;
 
 	[ SerializeField ] Material[]
 		FloatingScoreColor = new Material[3];
-
+	
 	GameObject
 		FloatingScoreObject;
 
@@ -28,7 +32,8 @@ public class ScorePopUpScript : MonoBehaviour {
 
 		FloatingScoreObject.GetComponent<FloatingScoreObjectScript>().SetUpFloatingScore(score_value,FloatingScoreColor[color_value]);
 
-		this.GetComponent<ParticleSystem>().Play();
+		ParticleEffect1.GetComponent<ParticleSystem>().Play();
+		ParticleEffect2.GetComponent<ParticleSystem>().Play();
 
 		ScorePopUpOn = true;
 	}

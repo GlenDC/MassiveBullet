@@ -3,7 +3,10 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
-    Transform gameSpawn;
+    [ SerializeField ] GameObject
+		HUDCamera;
+
+	Transform gameSpawn;
     GameScript gameScript;
 
     const float OFFSET_SCALE = 0.1f;
@@ -32,6 +35,8 @@ public class Player : MonoBehaviour
             ShootBullet( new Vector3( 0.0f, 1.0f, 1.0f ) );
             ShootBullet( new Vector3( -1.0f, 0.0f, 1.0f ) );
             ShootBullet( new Vector3( 1.0f, 0.0f, 1.0f ) );
+
+			HUDCamera.GetComponent<HudCameraScript>().ShootPistol();
         }
     }
 
