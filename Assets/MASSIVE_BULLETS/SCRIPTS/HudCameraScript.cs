@@ -75,7 +75,7 @@ public class HudCameraScript : MonoBehaviour
 
     void OnGUI()
     {
-        var bullets = GameScript.GetBullets();
+        var bullets = GameObject.FindGameObjectsWithTag( TAGS.BULLET );
  
         for( int i = 0; i < bullets.Length; ++i )
         {
