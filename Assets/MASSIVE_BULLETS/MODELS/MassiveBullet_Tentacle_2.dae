@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.68.0 r58536</authoring_tool>
+    </contributor>
+    <created>2014-07-19T18:17:28</created>
+    <modified>2014-07-19T18:17:28</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_images/>
+  <library_effects>
+    <effect id="Material-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.2924053 0.06243099 0.4740615 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided>1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+      <extra><technique profile="MAX3D"><double_sided>1</double_sided></technique></extra>
+    </effect>
+  </library_effects>
+  <library_materials>
+    <material id="Material-material" name="Material">
+      <instance_effect url="#Material-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="Cube-mesh" name="Cube">
+      <mesh>
+        <source id="Cube-mesh-positions">
+          <float_array id="Cube-mesh-positions-array" count="60">0.3099468 0.3099468 -1 0.3099468 -0.3099467 -1 -0.3099468 -0.3099467 -1 -0.3099467 0.309947 -1 1.511996 1.736357 4.190779 1.511996 0.5979269 4.190779 0.3735659 0.5979275 3.67855 0.3735661 1.736358 3.67855 -0.3174486 0.7125384 6.01592 -0.3174487 0.51734 6.01592 -0.5496807 0.5173401 6.055696 -0.5496807 0.7125385 6.055696 -0.3530957 0.7596849 6.988056 -0.3530958 0.6491483 6.988056 -0.4846037 0.6491484 7.151926 -0.4846037 0.7596849 7.151926 -0.1956639 1.077874 7.520555 -0.1956639 1.021813 7.520555 -0.2283605 1.021813 7.524384 -0.2283605 1.077874 7.524384</float_array>
+          <technique_common>
+            <accessor source="#Cube-mesh-positions-array" count="20" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Cube-mesh-normals">
+          <float_array id="Cube-mesh-normals-array" count="102">0.01297748 -0.9994997 -0.02884364 0.9742191 0 -0.2256039 0 -0.985047 0.1722859 -0.9894959 2.07228e-7 0.1445603 1.85432e-7 0.9642554 -0.2649745 0.02023899 -0.9927873 0.118169 -0.9321634 1.95221e-7 -0.3620378 0.7062737 -4.43739e-7 0.7079389 -0.1530543 0.9278268 0.3401642 -0.4618549 0.8057996 -0.3706443 -0.9982426 0 0.05926001 0.9993283 -6.10298e-7 0.03664427 -0.00728476 0.9990684 -0.04253524 0.116312 0 0.9932128 0.5087802 -0.7579128 0.4083027 -0.8238582 2.22125e-7 0.5667959 0.9589677 -5.17104e-7 -0.2835153 -0.009117186 -0.9985408 -0.05322808 0.9742192 -6.12085e-7 -0.2256036 -0.09112185 -0.97503 0.2025173 -0.989496 2.85429e-7 0.1445603 0.1382474 0.941532 -0.3072544 0.1726489 -0.9751899 0.1385532 -0.9321632 0 -0.362038 0.7062736 -4.31327e-7 0.707939 0.0956009 0.8242032 0.5581662 -0.05846792 0.8644717 -0.4992696 -0.9982426 2.69141e-7 0.05925995 0.9993284 -5.19668e-7 0.03664427 -0.06311833 0.9967198 -0.05065327 0.116312 0 0.9932128 0.06547194 -0.8265254 0.5590789 -0.8238582 2.18983e-7 0.566796 0.9589677 -4.78676e-7 -0.2835155</float_array>
+          <technique_common>
+            <accessor source="#Cube-mesh-normals-array" count="34" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Cube-mesh-vertices">
+          <input semantic="POSITION" source="#Cube-mesh-positions"/>
+        </vertices>
+        <polylist material="Material-material" count="34">
+          <input semantic="VERTEX" source="#Cube-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Cube-mesh-normals" offset="1"/>
+          <vcount>3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 </vcount>
+          <p>6 0 5 0 10 0 0 1 4 1 1 1 1 2 5 2 2 2 2 3 6 3 7 3 4 4 0 4 3 4 10 5 9 5 14 5 7 6 6 6 10 6 5 7 4 7 9 7 4 8 7 8 11 8 12 9 15 9 19 9 11 10 10 10 15 10 9 11 8 11 12 11 8 12 11 12 15 12 16 13 19 13 17 13 14 14 13 14 18 14 15 15 14 15 19 15 13 16 12 16 16 16 5 17 9 17 10 17 4 18 5 18 1 18 5 19 6 19 2 19 3 20 2 20 7 20 7 21 4 21 3 21 9 22 13 22 14 22 11 23 7 23 10 23 4 24 8 24 9 24 8 25 4 25 11 25 16 26 12 26 19 26 10 27 14 27 15 27 13 28 9 28 12 28 12 29 8 29 15 29 19 30 18 30 17 30 13 31 17 31 18 31 14 32 18 32 19 32 17 33 13 33 16 33</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+  </library_geometries>
+  <library_controllers/>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Cube" name="Cube" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#Cube-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Material-material" target="#Material-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>

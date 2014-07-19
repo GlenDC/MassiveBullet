@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <contributor>
+      <author>Blender User</author>
+      <authoring_tool>Blender 2.68.0 r58536</authoring_tool>
+    </contributor>
+    <created>2014-07-19T18:20:02</created>
+    <modified>2014-07-19T18:20:02</modified>
+    <unit name="meter" meter="1"/>
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_images/>
+  <library_effects>
+    <effect id="Material-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.2924053 0.06243099 0.4740615 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided>1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+      <extra><technique profile="MAX3D"><double_sided>1</double_sided></technique></extra>
+    </effect>
+  </library_effects>
+  <library_materials>
+    <material id="Material-material" name="Material">
+      <instance_effect url="#Material-effect"/>
+    </material>
+  </library_materials>
+  <library_geometries>
+    <geometry id="Cube-mesh" name="Cube">
+      <mesh>
+        <source id="Cube-mesh-positions">
+          <float_array id="Cube-mesh-positions-array" count="60">1.037475 0.6045219 -1 1.037475 -0.6045219 -1 -0.6045221 -0.6045218 -1 -0.6045217 0.6045222 -1 -0.05701959 -0.9606997 4.042744 -0.05701982 -1.836706 4.304433 -0.5374349 -1.836705 4.088273 -0.5374348 -0.9606996 3.826584 0.5256032 0.7790558 6.01592 0.5256031 0.5838574 6.01592 0.2933711 0.5838575 6.055696 0.2933711 0.7790559 6.055696 -0.3097705 0.7184459 6.78499 -0.3097707 0.3777025 6.78499 -0.7151607 0.3777027 6.638185 -0.7151607 0.7184459 6.638185 -0.08724921 0.712683 7.39348 -0.08724927 0.6058744 7.39348 -0.1495434 0.6058744 7.400775 -0.1495433 0.712683 7.400775</float_array>
+          <technique_common>
+            <accessor source="#Cube-mesh-positions-array" count="20" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="Cube-mesh-normals">
+          <float_array id="Cube-mesh-normals-array" count="102">-0.3601323 -0.4792444 0.8003934 0.9702176 0.06933492 0.2321003 0 -0.974065 -0.2262687 -0.9999132 2.95481e-7 0.01318359 -0.121525 0.9551354 0.2700891 -0.05349904 -0.9484587 -0.3123524 -0.9536789 0.08610582 0.28824 0.9715166 -0.06782871 -0.2270565 0.3054632 0.6676813 -0.6788916 -0.00395292 0.9999327 0.01091569 -0.5001371 0 -0.8659462 0.6773078 -4.13637e-7 0.7356998 0.01650452 0.9952098 0.09635913 0.116313 0 0.9932126 -0.1422158 -0.9085979 0.3927142 -0.8031865 0 0.5957276 0.9391711 -5.74997e-7 -0.3434496 0.1280542 -0.6516348 0.7476457 0.9793692 0 0.2020791 0.1058956 -0.9661235 -0.235354 -0.999871 0.004597008 0.01538842 1.38119e-7 0.9512319 0.3084767 0.07674717 -0.9742664 -0.2119312 -0.92123 0 0.3890183 0.9466519 -5.0669e-7 -0.3222578 -0.1007975 0.8021814 -0.5885109 8.14235e-4 0.9999755 0.006952822 -0.5001371 0 -0.8659464 0.6773078 -4.14674e-7 0.7356997 -0.02310651 0.9976949 0.06380653 0.1163131 0 0.9932126 0.0310679 -0.9636675 0.2652919 -0.8031865 2.24109e-7 0.5957277 0.9391711 -6.45991e-7 -0.3434497</float_array>
+          <technique_common>
+            <accessor source="#Cube-mesh-normals-array" count="34" stride="3">
+              <param name="X" type="float"/>
+              <param name="Y" type="float"/>
+              <param name="Z" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Cube-mesh-vertices">
+          <input semantic="POSITION" source="#Cube-mesh-positions"/>
+        </vertices>
+        <polylist material="Material-material" count="34">
+          <input semantic="VERTEX" source="#Cube-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Cube-mesh-normals" offset="1"/>
+          <vcount>3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 </vcount>
+          <p>6 0 5 0 9 0 0 1 4 1 5 1 1 2 5 2 2 2 2 3 6 3 3 3 4 4 0 4 7 4 10 5 9 5 13 5 7 6 6 6 11 6 5 7 4 7 8 7 4 8 7 8 8 8 12 9 15 9 16 9 11 10 10 10 14 10 9 11 8 11 13 11 8 12 11 12 12 12 16 13 19 13 17 13 14 14 13 14 17 14 15 15 14 15 19 15 13 16 12 16 16 16 10 17 6 17 9 17 1 18 0 18 5 18 5 19 6 19 2 19 6 20 7 20 3 20 0 21 3 21 7 21 14 22 10 22 13 22 6 23 10 23 11 23 9 24 5 24 8 24 7 25 11 25 8 25 15 26 19 26 16 26 15 27 11 27 14 27 8 28 12 28 13 28 11 29 15 29 12 29 19 30 18 30 17 30 18 31 14 31 17 31 14 32 18 32 19 32 17 33 13 33 16 33</p>
+        </polylist>
+      </mesh>
+      <extra><technique profile="MAYA"><double_sided>1</double_sided></technique></extra>
+    </geometry>
+  </library_geometries>
+  <library_controllers/>
+  <library_visual_scenes>
+    <visual_scene id="Scene" name="Scene">
+      <node id="Cube" name="Cube" type="NODE">
+        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <instance_geometry url="#Cube-mesh">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="Material-material" target="#Material-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#Scene"/>
+  </scene>
+</COLLADA>
