@@ -190,10 +190,13 @@ public class CharacterMotor : MonoBehaviour
 
     private CharacterController controller;
 
+    private GameScript gameScript;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
         tr = transform;
+        gameScript = GameObject.FindWithTag( TAGS.WORLD ).GetComponent< GameScript >();
     }
 
     private void UpdateFunction()
@@ -340,36 +343,41 @@ public class CharacterMotor : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(movingPlatform.enabled)
+        if( gameScript.GameIsActive )
         {
-            if(movingPlatform.activePlatform != null)
+            if(movingPlatform.enabled)
             {
-                if(!movingPlatform.newPlatform)
+                if(movingPlatform.activePlatform != null)
                 {
-                    // unused: Vector3 lastVelocity = movingPlatform.platformVelocity;
+                    if(!movingPlatform.newPlatform)
+                    {
+                        // unused: Vector3 lastVelocity = movingPlatform.platformVelocity;
 
-                    movingPlatform.platformVelocity = (
-                        movingPlatform.activePlatform.localToWorldMatrix.MultiplyPoint3x4(movingPlatform.activeLocalPoint)
-                        - movingPlatform.lastMatrix.MultiplyPoint3x4(movingPlatform.activeLocalPoint)
-                    ) / Time.deltaTime;
+                        movingPlatform.platformVelocity = (
+                            movingPlatform.activePlatform.localToWorldMatrix.MultiplyPoint3x4(movingPlatform.activeLocalPoint)
+                            - movingPlatform.lastMatrix.MultiplyPoint3x4(movingPlatform.activeLocalPoint)
+                        ) / Time.deltaTime;
+                    }
+                    movingPlatform.lastMatrix = movingPlatform.activePlatform.localToWorldMatrix;
+                    movingPlatform.newPlatform = false;
                 }
-                movingPlatform.lastMatrix = movingPlatform.activePlatform.localToWorldMatrix;
-                movingPlatform.newPlatform = false;
+                else
+                {
+                    movingPlatform.platformVelocity = Vector3.zero;
+                }
             }
-            else
-            {
-                movingPlatform.platformVelocity = Vector3.zero;
-            }
-        }
 
-        if(useFixedUpdate)
-            UpdateFunction();
+            if(useFixedUpdate)
+                UpdateFunction();
+            }
     }
 
     void Update()
     {
-        if(!useFixedUpdate)
+        if(gameScript.GameIsActive && !useFixedUpdate)
+        {
             UpdateFunction();
+        }
     }
 
     private Vector3 ApplyInputVelocityChange(Vector3 velocity)

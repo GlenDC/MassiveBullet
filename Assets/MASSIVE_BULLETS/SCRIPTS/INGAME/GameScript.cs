@@ -33,6 +33,11 @@ public class GameScript : MonoBehaviour
     public int gameScore { get; private set; }
     FibonacciObject timeScoreObject, bulletShotObject;
 
+    const float MAX_PAUSE_TIME = 2.0f;
+    float CurrentPauseTime;
+
+    public bool GameIsActive { get { return CurrentPauseTime >= MAX_PAUSE_TIME; } }
+
     Random random;
 
     Config
@@ -57,31 +62,70 @@ public class GameScript : MonoBehaviour
         Screen.lockCursor = true;
 
         random = new Random();
+
+        CurrentPauseTime = MAX_PAUSE_TIME / 2.0f;
     }
 
     void Update()
     {
-        if( IsActive )
+        if( GameIsActive )
         {
-            gameTime += Time.deltaTime;
-            extraGameTime += Time.deltaTime * ( (float) bulletCount / 3.0f );
+            if( IsActive )
+            {
+                gameTime += Time.deltaTime;
+                extraGameTime += Time.deltaTime * ( (float) bulletCount / 3.0f );
 
-            if( (int) gameTime / 5 >= timeScoreObject.GetIdentifier() )
-            {
-                AddScore( timeScoreObject.GetNextValue() );
+                if( (int) gameTime / 5 >= timeScoreObject.GetIdentifier() )
+                {
+                    AddScore( timeScoreObject.GetNextValue() );
+                }
+                else if( (int) extraGameTime >= 1.0f )
+                {
+                    AddScore( 1 );
+                    extraGameTime = 0.0f;
+                }
             }
-            else if( (int) extraGameTime >= 1.0f )
+
+            if( Input.GetKey( KeyCode.Escape ) )
             {
-                AddScore( 1 );
-                extraGameTime = 0.0f;
+                Screen.lockCursor = false;
+                Quit();
             }
         }
-
-        if( Input.GetKey( KeyCode.Escape ) )
+        else
         {
-            Screen.lockCursor = false;
-            Quit();
+            if( CurrentPauseTime < MAX_PAUSE_TIME / 2.0f )
+            {
+                CurrentPauseTime += 5.0f * Time.deltaTime;
+            }
+            else
+            {
+                CurrentPauseTime += Time.deltaTime;
+            }
         }
+    }
+
+    public float GetAlphaBlocker()
+    {
+        float
+            alpha;
+
+        alpha = CurrentPauseTime / MAX_PAUSE_TIME;
+
+        if( alpha > 0.5f )
+        {
+            alpha = 1.0f - ( ( alpha - 0.5f ) * 2.0f );
+        }
+        else if( alpha == 0.5f )
+        {
+            alpha = 0.0f;
+        }
+        else
+        {
+            alpha *= 2.0f;
+        }
+
+        return alpha;
     }
 
     void Quit()
@@ -96,6 +140,8 @@ public class GameScript : MonoBehaviour
         gameScore = 0;
         extraGameTime = 1.0f;
         hitCounter = 0;
+
+        CurrentPauseTime = 0.0f;
 
         timeScoreObject = new FibonacciObject();
         bulletShotObject = new FibonacciObject();

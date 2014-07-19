@@ -80,36 +80,39 @@ public class HudCameraScript : MonoBehaviour
 
     void OnGUI()
     {
-        var bullets = GameObject.FindGameObjectsWithTag( TAGS.BULLET );
- 
-        for( int i = 0; i < bullets.Length; ++i )
+        if( gameScript.GameIsActive )
         {
-            DrawBulletWarning( bullets[ i ].transform, bullets[i].renderer );
-        }
+            var bullets = GameObject.FindGameObjectsWithTag( TAGS.BULLET );
+     
+            for( int i = 0; i < bullets.Length; ++i )
+            {
+                DrawBulletWarning( bullets[ i ].transform, bullets[i].renderer );
+            }
 
-        GUI.DrawTexture(
-            new Rect( ( Screen.width / 2 ) - 25, ( Screen.height / 2 ) - 25, 50, 50 ),
-            CrosshairTexture
-            );
-
-        if( gameScript.IsActive )
-        {
-            GUI.TextField(
-                new Rect( 10, 10, 200, 20 ),
-                "Score: " + gameScript.gameScore
-                );
-        }
-        else
-        {
-            GUI.TextField(
-                new Rect( Screen.width / 2 - 130, Screen.height / 2 + 50, 260, 20),
-                "Fire some massive bullets and join the fun!"
+            GUI.DrawTexture(
+                new Rect( ( Screen.width / 2 ) - 25, ( Screen.height / 2 ) - 25, 50, 50 ),
+                CrosshairTexture
                 );
 
-            GUI.TextField(
-                new Rect( Screen.width / 2 - 130, Screen.height / 2 + 100, 260, 20),
-                "Highscore: " + configScript.highscore
-                );
+            if( gameScript.IsActive )
+            {
+                GUI.TextField(
+                    new Rect( 10, 10, 200, 20 ),
+                    "Score: " + gameScript.gameScore
+                    );
+            }
+            else
+            {
+                GUI.TextField(
+                    new Rect( Screen.width / 2 - 130, Screen.height / 2 + 50, 260, 20),
+                    "Fire some massive bullets and join the fun!"
+                    );
+
+                GUI.TextField(
+                    new Rect( Screen.width / 2 - 130, Screen.height / 2 + 100, 260, 20),
+                    "Highscore: " + configScript.highscore
+                    );
+            }
         }
     }
 
