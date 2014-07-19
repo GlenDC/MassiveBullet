@@ -223,12 +223,12 @@ public class Menu : MonoBehaviour
 
         GUI.DrawTexture(
             new Rect( 10, 10, 100, 100 ),
-            configScript.FacebookSelfie
+            Config.FacebookSelfie
             );
 
         GUI.TextField(
             new Rect( 10, 110, 100, 20),
-            configScript.FacebookName
+            Config.FacebookName
             );
     }
 }

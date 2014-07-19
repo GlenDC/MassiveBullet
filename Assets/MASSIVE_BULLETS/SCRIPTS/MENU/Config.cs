@@ -56,10 +56,10 @@ public class Config : MonoBehaviour
     public bool
         FacebookIsInitialized { get; private set; }
 
-    public Texture
+    static public Texture
         FacebookSelfie { get; private set; }
 
-    public string
+    static public string
         FacebookName { get; private set; }
 
     void Start ()
@@ -78,12 +78,15 @@ public class Config : MonoBehaviour
             HIGHSCORE_HANDLE, 0
             );
 
-        FacebookIsInitialized = false;
-        FacebookSelfie = null;
-        FB.Init(OnInitComplete, OnHideUnity);
+        if( FacebookSelfie == null )
+        {
+            FacebookSelfie = ( Texture ) Instantiate( Resources.Load( "DEFAULT_PROFILE_PIC" ) );
+            FacebookName = "Ranger \"Glen\"";
 
-        FacebookSelfie = ( Texture ) Instantiate( Resources.Load( "DEFAULT_PROFILE_PIC" ) );
-        FacebookName = "Ranger \"Glen\"";
+            // enable when publishing to fb
+            //FacebookIsInitialized = false;
+            //FB.Init(OnInitComplete, OnHideUnity);
+        }
     }
 
     public float GetLateralMovement()
