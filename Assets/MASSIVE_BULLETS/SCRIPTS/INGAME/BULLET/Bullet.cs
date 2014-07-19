@@ -45,16 +45,31 @@ public class Bullet : MonoBehaviour
         direction.Normalize();
     }
 
-    const float MAX_BLOCK_TIME = 0.5f;
+    const float MAX_BLOCK_TIME = 0.25f;
     float block_reverse_time = MAX_BLOCK_TIME;
+
+    Vector3 flipped;
 
     public void ReverseDirection()
     {
-        if( block_reverse_time < MAX_BLOCK_TIME )
+        if( block_reverse_time >= MAX_BLOCK_TIME )
         {
-            direction *= -1.0f;
+            if( transform.position.y < 1.0f )
+            {
+                flipped.y *= -1.0f;
+            }
+            else
+            {
+                flipped.z *= -1.0f;
+                flipped.x *= -1.0f;
+            }
+
+            block_reverse_time = 0.0f;
+            Debug.Log( "Reverse!" );
         }
     }
+
+    Vector3 oldPosition;
 
     void Start()
     {
@@ -71,6 +86,8 @@ public class Bullet : MonoBehaviour
 
         YFlipBlocked = false;
 
+        flipped = Vector3.one;
+
         IsDead = false;
 
         if( ++BULLET_COUNTER >= ( int ) BULLET_TYPE.COUNT )
@@ -78,6 +95,8 @@ public class Bullet : MonoBehaviour
             BULLET_COUNTER = 0;
             ++GROUP_COUNTER;
         }
+
+        block_reverse_time = MAX_BLOCK_TIME;
 
         switch( type )
         {
@@ -101,6 +120,34 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    Vector3 GetVelocity( float speed )
+    {
+        var velocity = direction * speed * Time.deltaTime;
+
+        velocity.x *= flipped.x;
+        velocity.y *= flipped.y;
+        velocity.z *= flipped.z;
+
+        return velocity;
+    }
+
+    int flipCounter = 0;
+
+    void SetStateToReturning()
+    {
+        state = BULLET_STATE.RETURNING;
+
+        RotationTime = Vector3.zero;
+
+        currentTiming = 0.0f;
+
+        RotationTime.x = gameScript.GetRandomFloat( MIN_ROTATION_TIME, MAX_ROTATION_TIME );
+        RotationTime.y = gameScript.GetRandomFloat( MIN_ROTATION_TIME, MAX_ROTATION_TIME );
+        RotationTime.z = gameScript.GetRandomFloat( MIN_ROTATION_TIME, MAX_ROTATION_TIME );
+
+        originalDirection = direction;
+    }
+
     void Update()
     {
         if( block_reverse_time < MAX_BLOCK_TIME )
@@ -116,6 +163,10 @@ public class Bullet : MonoBehaviour
         {
             direction = transform.forward;
             distance = 0.0f;
+        }
+        else if( flipped != Vector3.one )
+        {
+            ++flipCounter;
         }
 
         targetDirection = player.position - transform.position;
@@ -142,20 +193,10 @@ public class Bullet : MonoBehaviour
         {
             if( distance > MAX_DISTANCE )
             {
-                state = BULLET_STATE.RETURNING;
-
-                RotationTime = Vector3.zero;
-
-                currentTiming = 0.0f;
-
-                RotationTime.x = gameScript.GetRandomFloat( MIN_ROTATION_TIME, MAX_ROTATION_TIME );
-                RotationTime.y = gameScript.GetRandomFloat( MIN_ROTATION_TIME, MAX_ROTATION_TIME );
-                RotationTime.z = gameScript.GetRandomFloat( MIN_ROTATION_TIME, MAX_ROTATION_TIME );
-
-                originalDirection = direction;
+                SetStateToReturning();
             }
 
-            rigidBody.velocity = direction * speed * Time.deltaTime;
+            rigidBody.velocity = GetVelocity( speed );
         }
         else // returning
         {
@@ -165,7 +206,7 @@ public class Bullet : MonoBehaviour
             direction.y = Mathf.Lerp( originalDirection.y, targetDirection.y, currentTiming / RotationTime.y );
             direction.z = Mathf.Lerp( originalDirection.z, targetDirection.z, currentTiming / RotationTime.z );
 
-            rigidBody.velocity = direction * speed * Time.deltaTime;
+            rigidBody.velocity = GetVelocity( speed );
 
             if( distance < MIN_DISTANCE )
             {
@@ -183,5 +224,18 @@ public class Bullet : MonoBehaviour
         }*/
 
         transform.LookAt( transform.position + direction );
+
+        if( flipCounter > 25 && flipped != Vector3.one )
+        {
+            flipped = Vector3.one;
+            flipCounter = 0;
+
+            direction = PhysicsBullet.transform.position - oldPosition;
+            direction.Normalize();
+
+            SetStateToReturning();
+        }
+
+        oldPosition = PhysicsBullet.transform.position;
     }
 }

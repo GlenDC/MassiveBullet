@@ -69,6 +69,14 @@ public class ObstacleGeneratorScript : MonoBehaviour {
 			TentacleArray[i].name = this.name + "_tentacle_" + i;
 			TentacleArray[i].renderer.material = TentacleObjectMaterial;
 
+			var rb = TentacleArray[i].AddComponent< Rigidbody >();
+
+			rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ;
+
+			rb.useGravity = false;
+			rb.freezeRotation = true;
+			rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+
 			TentacleArray[i].transform.RotateAround(TentacleArray[i].transform.position,Vector3.right,-90.0f);
 
 			TentacleArray[i].transform.RotateAround(TentacleArray[i].transform.position,Vector3.up,Random.Range(0.0f,360.0f));
