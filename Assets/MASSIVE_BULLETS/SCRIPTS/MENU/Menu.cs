@@ -8,19 +8,40 @@ public class Menu : MonoBehaviour
 
     protected int HSEH { get { return Screen.height / 2; } }
     protected int HSEW { get { return Screen.width / 2; } }
+	
+	[ SerializeField ] Font
+		ControlButtonFont;
+
+	[ SerializeField ] Texture2D
+		SelectedBackground,
+		UnselectedBackground,
+		StartButton,
+		QuitButton;
 
     void Start()
     {
-        configScript =
+		this.GetComponent<StartMenuManager>().SetUpStartMenu();
+
+		configScript =
             GameObject.FindWithTag( TAGS.CONFIG ).GetComponent< Config >();
 
         thrash =
             GameObject.FindWithTag( TAGS.THRASH ).gameObject;
 
         leftHandButton = new ToggleButton();
-        rightHandButton = new ToggleButton();
-        azertyButton = new ToggleButton();
-        qwertyButton = new ToggleButton();
+		rightHandButton = new ToggleButton();
+		azertyButton = new ToggleButton();
+		qwertyButton = new ToggleButton();
+
+		leftHandButton.SetButtonFont(ControlButtonFont);
+		rightHandButton.SetButtonFont(ControlButtonFont);
+		azertyButton.SetButtonFont(ControlButtonFont);
+		qwertyButton.SetButtonFont(ControlButtonFont);
+
+		leftHandButton.SetBackground(SelectedBackground,UnselectedBackground);
+		rightHandButton.SetBackground(SelectedBackground,UnselectedBackground);
+		azertyButton.SetBackground(SelectedBackground,UnselectedBackground);
+		qwertyButton.SetBackground(SelectedBackground,UnselectedBackground);
 
         if( configScript.HandState == HAND_STATE.LEFT )
         {
@@ -47,14 +68,39 @@ public class Menu : MonoBehaviour
             backgroundColor,
             textColor;
 
+		Texture2D
+			selectedBackground,
+			unselectedBackground;
+
+		Font
+			buttonFont;
+
+		bool
+			buttonSelected;
+
+		public void SetButtonFont( Font button_Font ){
+
+			buttonFont = button_Font;
+		}
+
+		public void SetBackground(Texture2D selected_background, Texture2D unselected_background){
+
+			selectedBackground = selected_background;
+			unselectedBackground = unselected_background;
+		}
+
         public void SetToggled()
         {
-            textColor = Color.green;
+            textColor = Color.white;
+
+			buttonSelected = true;
         }
 
         public void SetUntoggled()
         {
-            textColor = Color.red;
+            textColor = Color.black;
+
+			buttonSelected = false;
         }
 
         public GUIStyle GetStyle()
@@ -63,7 +109,17 @@ public class Menu : MonoBehaviour
 
             style = new GUIStyle( GUI.skin.box );
             style.normal.textColor = textColor;
-            style.fontSize = 13;
+			style.font = buttonFont;
+			style.alignment = TextAnchor.MiddleCenter;
+
+			if (buttonSelected){
+				style.fontSize = 20;
+				style.normal.background = selectedBackground;
+			}
+			else if (!buttonSelected){
+				style.fontSize = 15;
+				style.normal.background = unselectedBackground;
+			}
 
             return style;
         }
@@ -109,8 +165,8 @@ public class Menu : MonoBehaviour
 
     void OnGUI()
     {
-        if( GUI.Button(
-                new Rect( HSEW - 175, HSEH - 50, 150, 25 ),
+		if( GUI.Button(
+                new Rect( HSEW - 300, HSEH + 80, 256, 64 ),
                 "LEFT HANDED",
                 leftHandButton.GetStyle()
                 ) )
@@ -119,7 +175,7 @@ public class Menu : MonoBehaviour
         }
 
         if( GUI.Button(
-                new Rect( HSEW + 25, HSEH - 50, 150, 25 ),
+                new Rect( HSEW + 44, HSEH + 80, 256, 64 ),
                 "RIGHT HANDED",
                 rightHandButton.GetStyle()
                 ) )
@@ -128,7 +184,7 @@ public class Menu : MonoBehaviour
         }
 
         if( GUI.Button(
-                new Rect( HSEW - 175, HSEH + 50, 150, 25 ),
+                new Rect( HSEW - 300, HSEH + 150, 256, 64 ),
                 "AZERTY",
                 azertyButton.GetStyle()
                 ) )
@@ -137,7 +193,7 @@ public class Menu : MonoBehaviour
         }
 
         if( GUI.Button(
-                new Rect( HSEW + 25, HSEH + 50, 150, 25 ),
+                new Rect( HSEW + 44, HSEH + 150, 256, 64 ),
                 "QWERTY",
                 qwertyButton.GetStyle()
                 ) )
@@ -146,17 +202,18 @@ public class Menu : MonoBehaviour
         }
 
         if( GUI.Button(
-                new Rect( HSEW - 100, HSEH + 150, 200, 25 ),
-                "START GAME"
+                new Rect( HSEW - 128, HSEH - 10, 320, 80 ),
+                StartButton,GUIStyle.none
                 ) )
         {
-            Destroy( thrash );
+			this.GetComponent<StartMenuManager>().RemoveTitle();
+			Destroy( thrash );
             Application.LoadLevelAdditive( "main" );
         }
 
         if( GUI.Button(
-                new Rect( HSEW - 100, HSEH + 200, 200, 25 ),
-                "QUIT"
+                new Rect( HSEW - 50, HSEH + 240, 107, 40 ),
+				QuitButton,GUIStyle.none
                 ) )
         {
             Application.Quit();
