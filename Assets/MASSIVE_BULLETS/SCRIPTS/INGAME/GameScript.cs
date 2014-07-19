@@ -33,6 +33,8 @@ public class GameScript : MonoBehaviour
     public int gameScore { get; private set; }
     FibonacciObject timeScoreObject;
 
+    Random random;
+
     Config
         config;
 
@@ -49,6 +51,8 @@ public class GameScript : MonoBehaviour
         Initialize();
 
         config = GameScript.GetConfig();
+
+        random = new Random();
     }
 
     void Update()
@@ -118,5 +122,15 @@ public class GameScript : MonoBehaviour
     public void AddScore( int score )
     {
         gameScore += score;
+    }
+
+    public float GetRandomFloat( float min, float max )
+    {
+        return Random.Range( min, max );
+    }
+
+    public int GetRandomInt( int min, int max )
+    {
+        return Random.Range( min, max );
     }
 }
