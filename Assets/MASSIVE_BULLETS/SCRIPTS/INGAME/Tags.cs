@@ -8,5 +8,7 @@
         CONFIG      = "Config",
         THRASH      = "Thrash",
         PISTOL      = "Pistol",
-        BULLET      = "Bullet";
+        BULLET      = "Bullet",
+        BULLET_COLLISION = "BulletCollision",
+        PLAYER_COLLISION = "PlayerCollision";
 }

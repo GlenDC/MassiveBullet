@@ -29,9 +29,9 @@ public class Player : MonoBehaviour
     {
         if( Input.GetButtonDown( "Fire" ) )
         {
-            ShootBullet( new Vector3( 0.0f, 1.0f, 0.0f ) );
-            ShootBullet( new Vector3( -1.0f, 0.0f, 0.0f ) );
-            ShootBullet( new Vector3( 1.0f, 0.0f, 0.0f ) );
+            ShootBullet( new Vector3( 0.0f, 1.0f, 1.0f ) );
+            ShootBullet( new Vector3( -1.0f, 0.0f, 1.0f ) );
+            ShootBullet( new Vector3( 1.0f, 0.0f, 1.0f ) );
         }
     }
 
@@ -62,6 +62,8 @@ public class Player : MonoBehaviour
 
         bullet.name = "BULLET_" + gameScript.bulletCount;
         gameScript.AddBullet();
+
+        bullet.GetComponent< Bullet >().SetDirection( bullet.transform.position - mainCamera.transform.position );
 
         bullet.tag = TAGS.BULLET;
     }

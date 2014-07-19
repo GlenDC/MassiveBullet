@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
     const float MAX_ROTATION_TIME = 10.0f;
 
     [SerializeField]
-        Transform VisualBullet;
+        TrailRenderer trail;
 
     Rigidbody rigidBody;
 
@@ -22,10 +22,23 @@ public class Bullet : MonoBehaviour
 
     GameScript gameScript;
 
+    [SerializeField]
+    GameObject PhysicsBullet;
+
     Vector3 RotationTime;
     float currentTiming;
 
+    BULLET_TYPE type;
+
+    static int BULLET_COUNTER = 0;
+
     Vector3 direction, originalDirection, targetDirection;
+
+    public void SetDirection( Vector3 dir )
+    {
+        direction = dir;
+        direction.Normalize();
+    }
 
     void Start()
     {
@@ -36,11 +49,38 @@ public class Bullet : MonoBehaviour
         state = BULLET_STATE.GOING;
 
         direction = Vector3.zero;
+
+        type = ( BULLET_TYPE ) BULLET_COUNTER;
+
+        if( BULLET_COUNTER++ >= ( int ) BULLET_TYPE.COUNT )
+        {
+            BULLET_COUNTER = 0;
+        }
+
+        switch( type )
+        {
+            case BULLET_TYPE.RED:
+            {
+                trail.material = 
+                    ( Material ) Instantiate( Resources.Load( "BULLET_TRAIL_RED_MATERIAL" ) );
+            } break;
+
+            case BULLET_TYPE.PURPLE:
+            {
+                trail.material = 
+                    ( Material ) Instantiate( Resources.Load( "BULLET_TRAIL_PURPLE_MATERIAL" ) );
+            } break;
+
+            case BULLET_TYPE.YELLOW:
+            {
+                trail.material = 
+                    ( Material ) Instantiate( Resources.Load( "BULLET_TRAIL_YELLOW_MATERIAL" ) );
+            } break;
+        }
     }
 
     void Update()
     {
-
         float
             distance;
 
@@ -69,6 +109,8 @@ public class Bullet : MonoBehaviour
                 RotationTime.z = gameScript.GetRandomFloat( MIN_ROTATION_TIME, MAX_ROTATION_TIME );
 
                 originalDirection = direction;
+
+                PhysicsBullet.active = true;
             }
 
             rigidBody.velocity = direction * SPEED * Time.deltaTime;

@@ -31,7 +31,7 @@ public class GameScript : MonoBehaviour
     public float gameTime;
 
     public int gameScore { get; private set; }
-    FibonacciObject timeScoreObject;
+    FibonacciObject timeScoreObject, bulletShotObject;
 
     Random random;
 
@@ -61,9 +61,9 @@ public class GameScript : MonoBehaviour
         {
             gameTime += Time.deltaTime;
 
-            if( (int) gameTime >= timeScoreObject.GetIdentifier() )
+            if( (int) gameTime / 5 >= timeScoreObject.GetIdentifier() )
             {
-                gameScore += timeScoreObject.GetNextValue();
+                AddScore( timeScoreObject.GetNextValue() );
             }
         }
 
@@ -85,6 +85,7 @@ public class GameScript : MonoBehaviour
         gameScore = 0;
 
         timeScoreObject = new FibonacciObject();
+        bulletShotObject = new FibonacciObject();
 
         GameBullets = new GameObject[0];
     }
@@ -117,6 +118,8 @@ public class GameScript : MonoBehaviour
     {
         --bulletCount;
         GameBullets = GameObject.FindGameObjectsWithTag( TAGS.BULLET );
+
+        AddScore( timeScoreObject.GetNextValue() );
     }
 
     public void AddScore( int score )
