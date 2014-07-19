@@ -5,5 +5,7 @@
         PLAYER  = "Player",
         SPAWN   = "Spawn",
         CONFIG  = "Config",
-        THRASH  = "Thrash";
+        THRASH  = "Thrash",
+        PISTOL  = "Pistol",
+        BULLET = "Bullet";
 }

@@ -19,16 +19,11 @@ public class GameScript : MonoBehaviour
         return config.GetComponent< Config >();
     }
 
+    public int bulletCount { get; private set; }
+
     void Start()
     {
-        if( GameObject.FindWithTag( TAGS.CONFIG ) == null )
-        {
-            GameObject
-                config;
-
-            config = ( GameObject ) Instantiate( Resources.Load( "CONFIG" ) );
-            config.name = "_CONFIG";
-        }
+        bulletCount = 0;
     }
 
     void Update()
@@ -46,6 +41,19 @@ public class GameScript : MonoBehaviour
 
     public void OnGameOver()
     {
-        Debug.Log( ":TODO: GameOver!" );
+        bulletCount = 0;
+
+        var bullets =
+            GameObject.FindGameObjectsWithTag( TAGS.BULLET );
+ 
+        for( int i = 0; i < bullets.Length; ++i )
+        {
+            Destroy( bullets[ i ].gameObject );
+        }
+    }
+
+    public void AddBullet()
+    {
+        ++bulletCount;
     }
 }

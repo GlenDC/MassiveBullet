@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PistolObjectScript : MonoBehaviour {
+public class PistolObjectScript : MonoBehaviour
+{
+	public static GameObject GetPistol()
+	{
+		return GameObject.FindWithTag( TAGS.PISTOL );
+	}
 
 	// Use this for initialization
 	void Start () {
