@@ -63,7 +63,7 @@ public class GameScript : MonoBehaviour
 
             if( (int) gameTime >= timeScoreObject.GetIdentifier() )
             {
-                gameScore += 25 * timeScoreObject.GetNextValue();
+                gameScore += timeScoreObject.GetNextValue();
             }
         }
 

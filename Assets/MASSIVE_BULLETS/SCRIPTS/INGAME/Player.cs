@@ -8,6 +8,9 @@ public class Player : MonoBehaviour
 
     const float OFFSET_SCALE = 0.1f;
 
+    Camera
+        mainCamera;
+
     void Start()
     {
         gameSpawn =
@@ -17,6 +20,9 @@ public class Player : MonoBehaviour
             GameObject.FindWithTag( TAGS.WORLD ).GetComponent< GameScript >();
 
         SpawnPlayer();
+
+        mainCamera =
+            GameObject.FindWithTag( TAGS.MAIN_CAMERA ).GetComponent< Camera >();
     }
 
     void Update()
@@ -47,12 +53,12 @@ public class Player : MonoBehaviour
 
         bullet = ( GameObject ) Instantiate( Resources.Load( "BULLET_PREFAB" ) );
 
-        bullet.transform.rotation = transform.rotation;
+        bullet.transform.rotation = mainCamera.transform.rotation;
 
-        bullet.transform.position = transform.position;
-        bullet.transform.position += transform.forward * offset.z * OFFSET_SCALE;
-        bullet.transform.position += transform.right * offset.x * OFFSET_SCALE;
-        bullet.transform.position += transform.up * offset.y * OFFSET_SCALE;
+        bullet.transform.position = mainCamera.transform.position;
+        bullet.transform.position += mainCamera.transform.forward * offset.z * OFFSET_SCALE;
+        bullet.transform.position += mainCamera.transform.right * offset.x * OFFSET_SCALE;
+        bullet.transform.position += mainCamera.transform.up * offset.y * OFFSET_SCALE;
 
         bullet.name = "BULLET_" + gameScript.bulletCount;
         gameScript.AddBullet();

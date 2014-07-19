@@ -5,17 +5,14 @@ public class Bullet : MonoBehaviour
 {
     const float SPEED = 2500.0f;
 
-    const float MIN_DISTANCE = 0.5f;
-    const float MAX_DISTANCE = 10.0f;
+    const float MIN_DISTANCE = 2.5f;
+    const float MAX_DISTANCE = 5.0f;
 
     const float MIN_ROTATION_TIME = 3.0f;
     const float MAX_ROTATION_TIME = 10.0f;
 
     [SerializeField]
         Transform VisualBullet;
-
-    Vector3 Velocity
-        { get { return transform.forward * SPEED * Time.deltaTime; } }
 
     Rigidbody rigidBody;
 
@@ -28,6 +25,8 @@ public class Bullet : MonoBehaviour
     Vector3 RotationTime;
     float currentTiming;
 
+    Vector3 direction, originalDirection, targetDirection;
+
     void Start()
     {
         player = GameObject.FindWithTag( TAGS.PLAYER ).transform;
@@ -35,18 +34,25 @@ public class Bullet : MonoBehaviour
 
         rigidBody = GetComponent< Rigidbody >();
         state = BULLET_STATE.GOING;
+
+        direction = Vector3.zero;
     }
 
     void Update()
     {
-        Vector3
-            direction;
+
         float
             distance;
 
-        direction = transform.position - player.position;
-        distance = direction.magnitude;
-        direction.Normalize();
+        if( direction == Vector3.zero )
+        {
+            direction = transform.forward;
+            distance = 0.0f;
+        }
+
+        targetDirection = player.position - transform.position;
+        distance = targetDirection.magnitude;
+        targetDirection.Normalize();
 
         if( state == BULLET_STATE.GOING )
         {
@@ -61,34 +67,28 @@ public class Bullet : MonoBehaviour
                 RotationTime.x = gameScript.GetRandomFloat( MIN_ROTATION_TIME, MAX_ROTATION_TIME );
                 RotationTime.y = gameScript.GetRandomFloat( MIN_ROTATION_TIME, MAX_ROTATION_TIME );
                 RotationTime.z = gameScript.GetRandomFloat( MIN_ROTATION_TIME, MAX_ROTATION_TIME );
+
+                originalDirection = direction;
             }
 
-            rigidBody.velocity = Velocity;
+            rigidBody.velocity = direction * SPEED * Time.deltaTime;
         }
         else // returning
         {
-            Vector3
-                rotation_speed,
-                target_direction;
-
-            target_direction = direction * -1.0f;
-
             currentTiming += Time.deltaTime;
 
-            direction.x = Mathf.Lerp( direction.x, target_direction.x, currentTiming / RotationTime.x );
-            direction.y = Mathf.Lerp( direction.y, target_direction.y, currentTiming / RotationTime.y );
-            direction.z = Mathf.Lerp( direction.z, target_direction.z, currentTiming / RotationTime.z );
+            direction.x = Mathf.Lerp( originalDirection.x, targetDirection.x, currentTiming / RotationTime.x );
+            direction.y = Mathf.Lerp( originalDirection.y, targetDirection.y, currentTiming / RotationTime.y );
+            direction.z = Mathf.Lerp( originalDirection.z, targetDirection.z, currentTiming / RotationTime.z );
 
-            transform.rotation = Quaternion.LookRotation( transform.position + direction );
+            rigidBody.velocity = direction * SPEED * Time.deltaTime;
 
             if( distance < MIN_DISTANCE )
             {
                 state = BULLET_STATE.GOING;
             }
-
-            rigidBody.velocity = direction * SPEED * Time.deltaTime;
         }
 
-        VisualBullet.rotation = Quaternion.LookRotation( transform.position - direction );
+        transform.LookAt( transform.position + direction );
     }
 }
