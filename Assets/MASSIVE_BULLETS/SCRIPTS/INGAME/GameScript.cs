@@ -3,6 +3,18 @@ using System.Collections;
 
 public class GameScript : MonoBehaviour
 {
+    void Start()
+    {
+        if( GameObject.FindWithTag( TAGS.CONFIG ) == null )
+        {
+            GameObject
+                config;
+
+            config = ( GameObject ) Instantiate( Resources.Load( "CONFIG" ) );
+            config.name = "_CONFIG";
+        }
+    }
+
     void Update()
     {
         if( Input.GetKey( KeyCode.Escape ) )
